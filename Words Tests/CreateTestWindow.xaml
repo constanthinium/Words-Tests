@@ -32,7 +32,7 @@
                 </MenuItem>
                 <MenuItem Header="Сохранить тест"
                           IsEnabled="{Binding ElementName=listBoxQuestions, Path=HasItems}"
-                          Click="SaveTest">
+                          Click="SaveTestButton_Click">
                     <MenuItem.Icon>
                         <Image Source="Icons\mmcndmgr_30613.ico" />
                     </MenuItem.Icon>

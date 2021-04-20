@@ -44,10 +44,10 @@
             </StackPanel>
         </Button>
         <Button Grid.Row="2"
-                Click="Import">
+                Click="EditTestButton_Click">
             <StackPanel Orientation="Horizontal">
-                <Image Source="/Icons/mmcndmgr_30619.ico" />
-                <TextBlock Text="Импортировать тест" />
+                <Image Source="/Icons/comres_2857.ico" />
+                <TextBlock Text="Редактировать тест" />
             </StackPanel>
         </Button>
     </Grid>

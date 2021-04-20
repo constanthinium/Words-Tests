@@ -9,12 +9,30 @@ namespace Words_Tests
 {
     public partial class CreateTestWindow : Window
     {
+        private readonly string _testFilePath;
+
         public CreateTestWindow()
         {
             InitializeComponent();
             for (int i = 0; i < 7; i++)
             {
                 AddQuestion(null, null);
+            }
+        }
+
+        public CreateTestWindow(string testFilePath, IEnumerable<(string question, string answer)> questions)
+        {
+            InitializeComponent();
+            _testFilePath = testFilePath;
+
+            foreach (var (question, answer) in questions)
+            {
+                AddQuestion(null, null);
+                var lastGrid = (Grid)listBoxQuestions.Items[listBoxQuestions.Items.Count - 1];
+                var questionTextBox = (TextBox)lastGrid.Children[1];
+                questionTextBox.Text = question;
+                var answerTextBox = (TextBox)lastGrid.Children[3];
+                answerTextBox.Text = answer;
             }
         }
 
@@ -77,7 +95,7 @@ namespace Words_Tests
                 ((CheckBox)grid.Children[4]).IsChecked = ((ListBoxItem)listBoxQuestions.ItemContainerGenerator.ContainerFromItem(grid)).IsSelected;
         }
 
-        private void SaveTest(object sender, RoutedEventArgs e)
+        private void SaveTestButton_Click(object sender, RoutedEventArgs e)
         {
             var pairs = new List<(string answer, string question)>();
             foreach (Grid grid in listBoxQuestions.Items)
@@ -93,20 +111,37 @@ namespace Words_Tests
                 MessageBox.Show("Нет ни одной действительной пары вопрос-ответ", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
-            string name = Interaction.InputBox("Введите имя теста");
-            if (name == "")
-                return;
-            string newFilePath = Path.Combine(App.testsDir, name) + ".xml";
-            if (File.Exists(newFilePath))
+            if (_testFilePath != null)
             {
-                MessageBox.Show("Тест с таким названием уже существует, попробуйте другое имя", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                SaveTestAndClose(_testFilePath, pairs);
+                MessageBox.Show("Этот тест изменен", "Тест изменен", MessageBoxButton.OK, MessageBoxImage.Information);
                 return;
             }
+            string name = Interaction.InputBox("Введите имя теста");
+            if (name == "") return;
+            var newTestFilePath = Path.Combine(App.testsDir, name) + ".xml";
+            if (File.Exists(newTestFilePath))
+            {
+                MessageBox.Show("Тест с таким названием уже существует, попробуйте другое имя",
+                    "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+            SaveTestAndClose(newTestFilePath, pairs);
+            MessageBox.Show("Тест сохранен", "Готово", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+
+        private void SaveTestAndClose(string saveFilePath, 
+            IReadOnlyCollection<(string question, string answer)> pairs)
+        {
             if (!Directory.Exists(App.testsDir))
+            {
                 Directory.CreateDirectory(App.testsDir);
-            using (FileStream fs = File.OpenWrite(newFilePath))
-                App.serializer.Serialize(fs, pairs);
-            MessageBox.Show("Тест сохранён", "Готово", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+
+            using (var saveTestFile = File.Create(saveFilePath))
+            {
+                App.serializer.Serialize(saveTestFile, pairs);
+            }
 
             Close();
         }
