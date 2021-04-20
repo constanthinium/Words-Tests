@@ -1,0 +1,82 @@
+﻿<Window x:Class="Words_Tests.PassTestWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Words_Tests"
+        mc:Ignorable="d"
+        Title="Пройти тест"
+        Style="{StaticResource {x:Type Window}}"
+        Closing="Window_Closing">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0"
+                   Name="textBlockQuestion"
+                   HorizontalAlignment="Center"
+                   FontSize="32" />
+        <Canvas Grid.Row="1"
+                Name="canvasScatter" />
+        <TextBox Grid.Row="2"
+                 Name="textBoxAnswer"
+                 FontSize="32"
+                 KeyDown="TextBoxAnswer_KeyDown"
+                 HorizontalContentAlignment="Center" />
+        <Button Name="buttonDone"
+                Grid.Row="3"
+                FontSize="32"
+                Click="Submit">
+            <StackPanel Orientation="Horizontal">
+                <Image Source="/Icons/shell32_16802.ico"
+                       Width="32" />
+                <TextBlock Text="Готово"
+                           VerticalAlignment="Center" />
+            </StackPanel>
+        </Button>
+
+        <Grid Grid.Row="4">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Grid.Resources>
+                <Style TargetType="Image">
+                    <Setter Property="Height"
+                            Value="16" />
+                </Style>
+            </Grid.Resources>
+            <Button Name="buttonShowFirstLetter"
+                    Grid.Column="0"
+                    Click="ShowFirstLetter">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="/Icons/mmcndmgr_30541.ico" />
+                    <TextBlock Text="Показать первую букву (-1 балл)" />
+                </StackPanel>
+            </Button>
+            <Button Name="buttonShowLength"
+                    Grid.Column="1"
+                    Click="ShowLength">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="/Icons/mmcndmgr_30580.ico" />
+                    <TextBlock Text="Показать длину слова (-1 балл)" />
+                </StackPanel>
+            </Button>
+            <Button Name="buttonScatterLetters"
+                    Grid.Column="2"
+                    Click="ScatterLetters">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="/Icons/mmcndmgr_30621.ico" />
+                    <TextBlock Text="Рассыпать буквы (-2 балла)" />
+                </StackPanel>
+            </Button>
+        </Grid>
+    </Grid>
+</Window>
