@@ -25,7 +25,7 @@ namespace Words_Tests.Pages
             MainWindow.MainFrameInstance.Navigate(passTestPage);
         }
 
-        private void EditTestButton_Click(object sender, RoutedEventArgs e)
+        private void EditTest(object sender, RoutedEventArgs e)
         {
             var dialog = new SelectTestDialog();
             if (!dialog.Show()) return;

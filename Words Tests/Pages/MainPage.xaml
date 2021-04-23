@@ -2,7 +2,8 @@
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:local="clr-namespace:Words_Tests"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="MainPage">
@@ -14,40 +15,23 @@
             <RowDefinition />
         </Grid.RowDefinitions>
         <Grid.Resources>
-            <Style TargetType="Button">
+            <Style TargetType="local:ImageButton">
                 <Setter Property="Margin"
                         Value="16" />
-            </Style>
-            <Style TargetType="TextBlock">
                 <Setter Property="FontSize"
-                        Value="32" />
-                <Setter Property="Margin"
-                        Value="16" />
-            </Style>
-            <Style TargetType="Image">
-                <Setter Property="Height"
                         Value="32" />
             </Style>
         </Grid.Resources>
-        <Button Click="CreateTest">
-            <StackPanel Orientation="Horizontal">
-                <Image Source="/Icons/mmcndmgr_30609.ico" />
-                <TextBlock Text="Создать тест" />
-            </StackPanel>
-        </Button>
-        <Button Grid.Row="1"
-                Click="PassTest">
-            <StackPanel Orientation="Horizontal">
-                <Image Source="/Icons/mmcndmgr_30538.ico" />
-                <TextBlock Text="Пройти тест" />
-            </StackPanel>
-        </Button>
-        <Button Grid.Row="2"
-                Click="EditTestButton_Click">
-            <StackPanel Orientation="Horizontal">
-                <Image Source="/Icons/comres_2857.ico" />
-                <TextBlock Text="Редактировать тест" />
-            </StackPanel>
-        </Button>
+        <local:ImageButton Text="Создать Тест" 
+                           Source="/Icons/mmcndmgr_30609.ico"
+                           Click="CreateTest" />
+        <local:ImageButton Grid.Row="1"
+                           Text="Пройти Тест"
+                           Source="/Icons/mmcndmgr_30538.ico" 
+                           Click="PassTest" />
+        <local:ImageButton Grid.Row="2"
+                           Text="Редактировать Тест"
+                           Source="/Icons/comres_2857.ico"
+                           Click="EditTest" />
     </Grid>
 </Page>
