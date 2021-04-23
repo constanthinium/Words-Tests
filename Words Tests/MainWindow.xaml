@@ -3,52 +3,13 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Words_Tests"
         mc:Ignorable="d"
-        Title="Words Test"
-        Style="{StaticResource {x:Type Window}}">
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition />
-            <RowDefinition />
-            <RowDefinition />
-        </Grid.RowDefinitions>
-        <Grid.Resources>
-            <Style TargetType="Button">
-                <Setter Property="Margin"
-                        Value="30" />
-            </Style>
-            <Style TargetType="TextBlock">
-                <Setter Property="FontSize"
-                        Value="32" />
-                <Setter Property="Margin"
-                        Value="20" />
-            </Style>
-            <Style TargetType="Image">
-                <Setter Property="Height"
-                        Value="32" />
-            </Style>
-        </Grid.Resources>
-        <Button Grid.Row="0"
-                Click="CreateTest">
-            <StackPanel Orientation="Horizontal">
-                <Image Source="/Icons/mmcndmgr_30609.ico" />
-                <TextBlock Text="Создать тест" />
-            </StackPanel>
-        </Button>
-        <Button Grid.Row="1"
-                Click="PassTest">
-            <StackPanel Orientation="Horizontal">
-                <Image Source="/Icons/mmcndmgr_30538.ico" />
-                <TextBlock Text="Пройти тест" />
-            </StackPanel>
-        </Button>
-        <Button Grid.Row="2"
-                Click="EditTestButton_Click">
-            <StackPanel Orientation="Horizontal">
-                <Image Source="/Icons/comres_2857.ico" />
-                <TextBlock Text="Редактировать тест" />
-            </StackPanel>
-        </Button>
-    </Grid>
+        Title="Words Test" Height="450" Width="800"
+        x:Name="MainWindowInstance"
+        MinWidth="{Binding ElementName=MainWindowInstance, Path=Width, Mode=OneTime}"
+        MinHeight="{Binding ElementName=MainWindowInstance, Path=Height, Mode=OneTime}">
+
+    <Frame x:Name="MainFrame"
+           Source="Pages\MainPage.xaml"
+           NavigationUIVisibility="Hidden" />
 </Window>

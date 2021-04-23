@@ -1,17 +1,16 @@
-﻿using Microsoft.VisualBasic;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
+using Microsoft.VisualBasic;
 
-namespace Words_Tests
+namespace Words_Tests.Pages
 {
-    public partial class CreateTestWindow : Window
+    public partial class EditTestPage : Page
     {
         private readonly string _testFilePath;
 
-        public CreateTestWindow()
+        public EditTestPage()
         {
             InitializeComponent();
             for (int i = 0; i < 7; i++)
@@ -20,7 +19,7 @@ namespace Words_Tests
             }
         }
 
-        public CreateTestWindow(string testFilePath, IEnumerable<(string question, string answer)> questions)
+        public EditTestPage(string testFilePath, IEnumerable<(string question, string answer)> questions)
         {
             InitializeComponent();
             _testFilePath = testFilePath;
@@ -143,16 +142,7 @@ namespace Words_Tests
                 App.serializer.Serialize(saveTestFile, pairs);
             }
 
-            Close();
-        }
-
-        private void Window_Closing(object sender, EventArgs e)
-        {
-            new MainWindow
-            {
-                Left = Left,
-                Top = Top
-            }.Show();
+            MainWindow.MainFrameInstance.GoBack();
         }
     }
 }

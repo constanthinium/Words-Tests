@@ -4,9 +4,9 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
-namespace Words_Tests
+namespace Words_Tests.Pages
 {
-    public partial class PassTestWindow : Window
+    public partial class PassTestPage : Page
     {
         private int score;
         private int currentPairId;
@@ -17,7 +17,7 @@ namespace Words_Tests
         private const string stringScatterLetters = "Рассыпать буквы (-2 балла)";
         private const string stringMixLetters = "Перемешать буквы";
 
-        public PassTestWindow(List<(string question, string answer)> pairs)
+        public PassTestPage(List<(string question, string answer)> pairs)
         {
             InitializeComponent();
             SizeChanged += (s, e) => MixLetters();
@@ -49,7 +49,7 @@ namespace Words_Tests
             pairs.RemoveAt(currentPairId);
             if (pairs.Count == 0)
             {
-                Close();
+                MainWindow.MainFrameInstance.GoBack();
                 MessageBox.Show($"Тест пройден. Очки: {score} из {questionCount * 5}", "Тест пройден", MessageBoxButton.OK, MessageBoxImage.Information);
                 return;
             }
@@ -63,15 +63,6 @@ namespace Words_Tests
         {
             if (e.Key == Key.Enter)
                 Submit(null, null);
-        }
-
-        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            new MainWindow
-            {
-                Left = Left,
-                Top = Top
-            }.Show();
         }
 
         private void ShowFirstLetter(object sender, RoutedEventArgs e)
