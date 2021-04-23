@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace Words_Tests
 {
@@ -10,41 +12,36 @@ namespace Words_Tests
         public List<(string question, string answer)> Questions;
         public string TestFilePath;
 
-        public bool Show()
+        public bool Show(Window parent)
         {
-            var cursorPos = System.Windows.Forms.Cursor.Position;
-
-            var form = new System.Windows.Forms.Form
+            var window = new Window
             {
-                Text = "Выберите тест",
-                ShowIcon = false,
-                MinimizeBox = false,
-                MaximizeBox = false,
-                FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog,
-                Left = cursorPos.X,
-                Top = cursorPos.Y,
+                Title = "Выберите тест",
+                WindowStyle = WindowStyle.None,
+                Width = parent.ActualWidth / 2,
+                Height = parent.ActualHeight / 2,
+                Owner = parent,
+                WindowStartupLocation = WindowStartupLocation.CenterOwner,
+                ResizeMode = ResizeMode.NoResize
             };
 
-            var listBox = new System.Windows.Forms.ListBox
-            { Dock = System.Windows.Forms.DockStyle.Fill };
-
-            listBox.SelectedValueChanged += (s, ea) =>
+            window.KeyDown += (sender, args) =>
             {
-                form.DialogResult = System.Windows.Forms.DialogResult.OK;
-                form.Close();
+                if (args.Key == Key.Escape)
+                {
+                    window.Close();
+                }
             };
 
-            if (!Directory.Exists(App.testsDir))
-            {
-                DisplayNoTestsMessage();
-                return false;
-            }
-
+            var listBox = new ListBox();
+            window.Content = listBox;
+            listBox.MouseDoubleClick += (sender, args) => window.DialogResult = true;
             var testFiles = Directory.GetFiles(App.testsDir, "*.xml");
 
-            if (testFiles.Length == 0)
+            if (!Directory.Exists(App.testsDir) || testFiles.Length == 0)
             {
-                DisplayNoTestsMessage();
+                MessageBox.Show("Похоже, у вас нет ни одного теста, который можно было бы пройти или отредактировать.",
+                    "Нет тестов", MessageBoxButton.OK, MessageBoxImage.Information);
                 return false;
             }
 
@@ -53,9 +50,7 @@ namespace Words_Tests
                 listBox.Items.Add(Path.GetFileNameWithoutExtension(file));
             }
 
-            form.Controls.Add(listBox);
-
-            if (form.ShowDialog() == System.Windows.Forms.DialogResult.Cancel)
+            if (window.ShowDialog() == false)
             {
                 return false;
             }
@@ -65,22 +60,18 @@ namespace Words_Tests
                 TestFilePath = testFiles[listBox.SelectedIndex];
 
                 using (var testFile = File.OpenRead(TestFilePath))
-                { Questions = (List<(string question, string answer)>)App.serializer.Deserialize(testFile); }
+                {
+                    Questions = (List<(string question, string answer)>)App.serializer.Deserialize(testFile);
+                }
 
                 return true;
             }
             catch (InvalidOperationException)
             {
-                MessageBox.Show("Тест, который вы пытаетесь открыть, либо не является тестом, либо поврежден", "Ошибка",
+                MessageBox.Show("Тест, который вы пытаетесь открыть, либо не является тестом, либо поврежден.", "Ошибка",
                     MessageBoxButton.OK, MessageBoxImage.Error);
                 return false;
             }
-        }
-
-        private static void DisplayNoTestsMessage()
-        {
-            MessageBox.Show("Похоже, у вас нет ни одного теста, который можно было бы пройти или отредактировать.", "Нет тестов",
-                MessageBoxButton.OK, MessageBoxImage.Information);
         }
     }
 }

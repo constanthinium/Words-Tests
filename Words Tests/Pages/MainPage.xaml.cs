@@ -19,7 +19,7 @@ namespace Words_Tests.Pages
         private void PassTest(object sender, RoutedEventArgs e)
         {
             var dialog = new SelectTestDialog();
-            if (!dialog.Show()) return;
+            if (!dialog.Show(MainWindow.Instance)) return;
 
             var passTestPage = new PassTestPage(dialog.Questions);
             MainWindow.MainFrameInstance.Navigate(passTestPage);
@@ -28,7 +28,7 @@ namespace Words_Tests.Pages
         private void EditTest(object sender, RoutedEventArgs e)
         {
             var dialog = new SelectTestDialog();
-            if (!dialog.Show()) return;
+            if (!dialog.Show(MainWindow.Instance)) return;
 
             var createTestPage = new EditTestPage(dialog.TestFilePath, dialog.Questions);
             MainWindow.MainFrameInstance.Navigate(createTestPage);
