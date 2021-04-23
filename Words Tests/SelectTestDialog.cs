@@ -4,6 +4,7 @@ using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media.Effects;
 
 namespace Words_Tests
 {
@@ -22,7 +23,8 @@ namespace Words_Tests
                 Height = parent.ActualHeight / 2,
                 Owner = parent,
                 WindowStartupLocation = WindowStartupLocation.CenterOwner,
-                ResizeMode = ResizeMode.NoResize
+                ResizeMode = ResizeMode.NoResize,
+                ShowInTaskbar = false
             };
 
             window.KeyDown += (sender, args) =>
@@ -33,6 +35,7 @@ namespace Words_Tests
                 }
             };
 
+            window.Closing += (sender, args) => parent.Effect = null;
             var listBox = new ListBox();
             window.Content = listBox;
             listBox.MouseDoubleClick += (sender, args) => window.DialogResult = true;
@@ -50,6 +53,7 @@ namespace Words_Tests
                 listBox.Items.Add(Path.GetFileNameWithoutExtension(file));
             }
 
+            parent.Effect = new BlurEffect { Radius = 16 };
             if (window.ShowDialog() == false)
             {
                 return false;
