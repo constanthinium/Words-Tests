@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Globalization;
+using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media;
 
@@ -9,7 +10,7 @@ namespace Words_Tests
     {
         public string Text { get; set; }
 
-        public ImageSource Source { get; set; }
+        public ImageSource Image { get; set; }
 
         public ImageButton()
         {
@@ -18,11 +19,16 @@ namespace Words_Tests
         }
     }
 
-    public class ImageHeightConverter : IValueConverter
+    public class ImageButtonConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return (double)value * 1.5;
+            var dValue = (double)value;
+            if (targetType == typeof(Thickness))
+                return dValue / 2;
+            if (targetType == typeof(double))
+                return dValue * 1.5f;
+            throw new ArgumentException("What are you doing");
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

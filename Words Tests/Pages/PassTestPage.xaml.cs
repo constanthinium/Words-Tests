@@ -35,12 +35,12 @@ namespace Words_Tests.Pages
             {
                 score++;
                 score +=
-                    Convert.ToInt32(buttonShowFirstLetter.IsEnabled) +
-                    Convert.ToInt32(buttonShowLength.IsEnabled) +
-                    Convert.ToInt32(((TextBlock)((StackPanel)buttonScatterLetters.Content).Children[1]).Text == stringScatterLetters) * 2;
+                    Convert.ToInt32(ButtonShowFirstLetter.IsEnabled) +
+                    Convert.ToInt32(ButtonShowLength.IsEnabled) +
+                    Convert.ToInt32(((TextBlock)((StackPanel)ButtonScatterLetters.Content).Children[1]).Text == stringScatterLetters) * 2;
                 MessageBox.Show("Верно", "Верно", MessageBoxButton.OK, MessageBoxImage.Information);
-                buttonShowFirstLetter.IsEnabled = buttonShowLength.IsEnabled = true;
-                ((TextBlock)((StackPanel)buttonScatterLetters.Content).Children[1]).Text = stringScatterLetters;
+                ButtonShowFirstLetter.IsEnabled = ButtonShowLength.IsEnabled = true;
+                ((TextBlock)((StackPanel)ButtonScatterLetters.Content).Children[1]).Text = stringScatterLetters;
             }
             else
             {
@@ -79,9 +79,9 @@ namespace Words_Tests.Pages
 
         private void ScatterLetters(object sender, RoutedEventArgs e)
         {
-            if (((TextBlock)((StackPanel)buttonScatterLetters.Content).Children[1]).Text == stringScatterLetters)
+            if (((TextBlock)((StackPanel)ButtonScatterLetters.Content).Children[1]).Text == stringScatterLetters)
             {
-                textBoxAnswer.IsEnabled = buttonDone.IsEnabled = false;
+                textBoxAnswer.IsEnabled = DoneButton.IsEnabled = false;
                 foreach (char letter in pairs[currentPairId].answer)
                 {
                     Button buttonLetter = new Button
@@ -99,16 +99,16 @@ namespace Words_Tests.Pages
                             if (textBoxAnswer.Text == pairs[currentPairId].answer)
                             {
                                 Submit(null, null);
-                                textBoxAnswer.IsEnabled = buttonDone.IsEnabled = true;
+                                textBoxAnswer.IsEnabled = DoneButton.IsEnabled = true;
                             }
                         }
                         else MessageBox.Show("Неверно");
                     };
                     canvasScatter.Children.Add(buttonLetter);
                 }
-                ((TextBlock)((StackPanel)buttonScatterLetters.Content).Children[1]).Text = stringMixLetters;
+                ((TextBlock)((StackPanel)ButtonScatterLetters.Content).Children[1]).Text = stringMixLetters;
             }
-            else if (((TextBlock)((StackPanel)buttonScatterLetters.Content).Children[1]).Text == stringMixLetters)
+            else if (((TextBlock)((StackPanel)ButtonScatterLetters.Content).Children[1]).Text == stringMixLetters)
                 MixLetters();
         }
 

@@ -5,66 +5,81 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
-      Title="EditTestPage">
+      Title="Редактировать Тест">
 
-    <Grid>
-        <DockPanel>
-            <Menu DockPanel.Dock="Top">
-                <Menu.Resources>
-                    <Style TargetType="MenuItem">
-                        <Setter Property="IsTabStop"
+    <DockPanel>
+        <Menu DockPanel.Dock="Top">
+            <Menu.Resources>
+                <Style TargetType="MenuItem">
+                    <Setter Property="IsTabStop"
                                 Value="False" />
-                    </Style>
-                </Menu.Resources>
-                <MenuItem Header="Добавить вопрос"
-                          Click="AddQuestion">
-                    <MenuItem.Icon>
-                        <Image Source="..\..\Icons\mmcndmgr_30609.ico" />
-                    </MenuItem.Icon>
-                </MenuItem>
-                <MenuItem Header="Удалить выделенные вопросы"
-                          IsEnabled="{Binding ElementName=listBoxQuestions, Path=SelectedItems.Count}"
+                </Style>
+                <Style TargetType="TextBlock">
+                    <Style.Triggers>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Foreground" Value="Gray" />
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </Menu.Resources>
+            <MenuItem Click="AddQuestion">
+                <MenuItem.Header>
+                    <TextBlock Text="Добавить Вопрос" VerticalAlignment="Center" />
+                </MenuItem.Header>
+                <MenuItem.Icon>
+                    <Image Source="../Icons/Add.ico" />
+                </MenuItem.Icon>
+            </MenuItem>
+            <MenuItem x:Name="RemoveMenuItem"
+                          IsEnabled="{Binding ElementName=ListBoxQuestions, Path=HasItems}"
                           Click="RemoveQuestions">
-                    <MenuItem.Icon>
-                        <Image Source="..\Icons\mmcndmgr_30506.ico" />
-                    </MenuItem.Icon>
-                </MenuItem>
-                <MenuItem Header="Сохранить тест"
-                          IsEnabled="{Binding ElementName=listBoxQuestions, Path=HasItems}"
+                <MenuItem.Header>
+                    <TextBlock Text="Удалить Вопросы" VerticalAlignment="Center"
+                                   IsEnabled="{Binding ElementName=RemoveMenuItem, Path=IsEnabled}"/>
+                </MenuItem.Header>
+                <MenuItem.Icon>
+                    <Image Source="../Icons/Remove.ico" />
+                </MenuItem.Icon>
+            </MenuItem>
+            <MenuItem x:Name="SaveMenuItem"
+                          IsEnabled="{Binding ElementName=ListBoxQuestions, Path=HasItems}"
                           Click="SaveTestButton_Click">
-                    <MenuItem.Icon>
-                        <Image Source="..\Icons\mmcndmgr_30613.ico" />
-                    </MenuItem.Icon>
-                </MenuItem>
-            </Menu>
-            <ScrollViewer>
-                <ListBox Name="listBoxQuestions"
+                <MenuItem.Header>
+                    <TextBlock Text="Сохранить Тест" VerticalAlignment="Center"
+                                   IsEnabled="{Binding ElementName=SaveMenuItem, Path=IsEnabled}"/>
+                </MenuItem.Header>
+                <MenuItem.Icon>
+                    <Image Source="../Icons/Save.ico" />
+                </MenuItem.Icon>
+            </MenuItem>
+        </Menu>
+        <ScrollViewer>
+            <ListBox Name="ListBoxQuestions"
                          KeyboardNavigation.TabNavigation="Continue"
                          SelectionChanged="ListBoxQuestions_SelectionChanged"
                          HorizontalContentAlignment="Stretch"
                          SelectionMode="Multiple">
-                    <ListBox.Resources>
-                        <Style TargetType="FrameworkElement"
-                               x:Key="base">
-                            <Setter Property="Margin"
+                <ListBox.Resources>
+                    <Style TargetType="FrameworkElement"
+                               x:Key="QuestionGridBase">
+                        <Setter Property="Margin"
                                     Value="10" />
-                        </Style>
-                        <Style BasedOn="{StaticResource base}"
-                               TargetType="{x:Type TextBox}">
-                            <Setter Property="FontSize"
+                    </Style>
+                    <Style BasedOn="{StaticResource QuestionGridBase}"
+                               TargetType="TextBox">
+                        <Setter Property="FontSize"
                                     Value="14" />
-                        </Style>
-                        <Style BasedOn="{StaticResource base}"
-                               TargetType="{x:Type TextBlock}" />
-                        <Style BasedOn="{StaticResource base}"
-                               TargetType="{x:Type CheckBox}" />
-                        <Style TargetType="ListBoxItem">
-                            <Setter Property="IsTabStop"
+                    </Style>
+                    <Style BasedOn="{StaticResource QuestionGridBase}"
+                               TargetType="TextBlock" />
+                    <Style BasedOn="{StaticResource QuestionGridBase}"
+                               TargetType="CheckBox" />
+                    <Style TargetType="ListBoxItem">
+                        <Setter Property="IsTabStop"
                                     Value="False" />
-                        </Style>
-                    </ListBox.Resources>
-                </ListBox>
-            </ScrollViewer>
-        </DockPanel>
-    </Grid>
+                    </Style>
+                </ListBox.Resources>
+            </ListBox>
+        </ScrollViewer>
+    </DockPanel>
 </Page>

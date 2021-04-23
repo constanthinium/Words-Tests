@@ -6,11 +6,12 @@
              xmlns:local="clr-namespace:Words_Tests"
              mc:Ignorable="d">
     <Button.Resources>
-        <local:ImageHeightConverter x:Key="Converter" />
+        <local:ImageButtonConverter x:Key="ImageButtonConverter" />
     </Button.Resources>
     <StackPanel Orientation="Horizontal">
-        <Image Source="{Binding Path=Source}" 
-               Height="{Binding Path=FontSize, Converter={StaticResource Converter}}" />
+        <Image Source="{Binding Path=Image}" 
+               Height="{Binding Path=FontSize, Converter={StaticResource ImageButtonConverter}}"
+               Margin="{Binding Path=FontSize, Converter={StaticResource ImageButtonConverter}}"/>
         <TextBlock Text="{Binding Path=Text}" VerticalAlignment="Center" />
     </StackPanel>
 </Button>

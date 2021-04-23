@@ -6,7 +6,7 @@
       xmlns:local="clr-namespace:Words_Tests"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
-      Title="MainPage">
+      Title="Главная Страница">
 
     <Grid>
         <Grid.RowDefinitions>
@@ -23,15 +23,15 @@
             </Style>
         </Grid.Resources>
         <local:ImageButton Text="Создать Тест" 
-                           Source="/Icons/mmcndmgr_30609.ico"
+                           Image="../Icons/Add.ico"
                            Click="CreateTest" />
         <local:ImageButton Grid.Row="1"
                            Text="Пройти Тест"
-                           Source="/Icons/mmcndmgr_30538.ico" 
+                           Image="../Icons/PassTest.ico"
                            Click="PassTest" />
         <local:ImageButton Grid.Row="2"
                            Text="Редактировать Тест"
-                           Source="/Icons/comres_2857.ico"
+                           Image="../Icons/Edit.ico" 
                            Click="EditTest" />
     </Grid>
 </Page>

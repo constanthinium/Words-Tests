@@ -35,7 +35,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>Icons\mmcndmgr_30622.ico</ApplicationIcon>
+    <ApplicationIcon>Icons\Test.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.VisualBasic" />
@@ -130,17 +130,34 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Icons\comres_2857.ico" />
-    <Resource Include="Icons\mmcndmgr_30506.ico" />
-    <Resource Include="Icons\mmcndmgr_30538.ico" />
-    <Resource Include="Icons\mmcndmgr_30541.ico" />
-    <Resource Include="Icons\mmcndmgr_30580.ico" />
-    <Resource Include="Icons\mmcndmgr_30609.ico" />
-    <Resource Include="Icons\mmcndmgr_30613.ico" />
-    <Resource Include="Icons\mmcndmgr_30621.ico" />
-    <Resource Include="Icons\mmcndmgr_30622.ico" />
-    <Resource Include="Icons\shell32_16802.ico" />
+    <Resource Include="Icons\Done.ico" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Icons\Add.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\Edit.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\Test.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\PassTest.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\Remove.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\Save.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\CapitalLetter.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\Length.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\Scatter.ico" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

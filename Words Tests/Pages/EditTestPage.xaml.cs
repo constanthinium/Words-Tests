@@ -13,7 +13,7 @@ namespace Words_Tests.Pages
         public EditTestPage()
         {
             InitializeComponent();
-            for (int i = 0; i < 7; i++)
+            for (int i = 0; i < 5; i++)
             {
                 AddQuestion(null, null);
             }
@@ -27,7 +27,7 @@ namespace Words_Tests.Pages
             foreach (var (question, answer) in questions)
             {
                 AddQuestion(null, null);
-                var lastGrid = (Grid)listBoxQuestions.Items[listBoxQuestions.Items.Count - 1];
+                var lastGrid = (Grid)ListBoxQuestions.Items[ListBoxQuestions.Items.Count - 1];
                 var questionTextBox = (TextBox)lastGrid.Children[1];
                 questionTextBox.Text = question;
                 var answerTextBox = (TextBox)lastGrid.Children[3];
@@ -37,27 +37,27 @@ namespace Words_Tests.Pages
 
         private void AddQuestion(object sender, RoutedEventArgs e)
         {
-            TextBlock textBlockQuestion = new TextBlock { Text = $"Вопрос {listBoxQuestions.Items.Count + 1}:", };
+            TextBlock textBlockQuestion = new TextBlock { Text = $"Вопрос {ListBoxQuestions.Items.Count + 1}:", };
             Grid.SetColumn(textBlockQuestion, 0);
-            Grid.SetRow(textBlockQuestion, listBoxQuestions.Items.Count);
+            Grid.SetRow(textBlockQuestion, ListBoxQuestions.Items.Count);
 
             TextBox textBoxQuestion = new TextBox();
             Grid.SetColumn(textBoxQuestion, 1);
-            Grid.SetRow(textBoxQuestion, listBoxQuestions.Items.Count);
+            Grid.SetRow(textBoxQuestion, ListBoxQuestions.Items.Count);
 
-            TextBlock textBlockAnswer = new TextBlock { Text = $"Ответ {listBoxQuestions.Items.Count + 1}:", };
+            TextBlock textBlockAnswer = new TextBlock { Text = $"Ответ {ListBoxQuestions.Items.Count + 1}:", };
             Grid.SetColumn(textBlockAnswer, 2);
-            Grid.SetRow(textBlockAnswer, listBoxQuestions.Items.Count);
+            Grid.SetRow(textBlockAnswer, ListBoxQuestions.Items.Count);
 
             TextBox textBoxAnswer = new TextBox();
             Grid.SetColumn(textBoxAnswer, 3);
-            Grid.SetRow(textBoxAnswer, listBoxQuestions.Items.Count);
+            Grid.SetRow(textBoxAnswer, ListBoxQuestions.Items.Count);
 
             CheckBox checkBoxRemove = new CheckBox { IsTabStop = false };
             checkBoxRemove.Click += (s, ea) =>
-                ((ListBoxItem)listBoxQuestions.ItemContainerGenerator.ContainerFromItem((Grid)checkBoxRemove.Parent)).IsSelected = checkBoxRemove.IsChecked.Value;
+                ((ListBoxItem)ListBoxQuestions.ItemContainerGenerator.ContainerFromItem((Grid)checkBoxRemove.Parent)).IsSelected = checkBoxRemove.IsChecked.Value;
             Grid.SetColumn(checkBoxRemove, 4);
-            Grid.SetRow(checkBoxRemove, listBoxQuestions.Items.Count);
+            Grid.SetRow(checkBoxRemove, ListBoxQuestions.Items.Count);
 
             Grid grid = new Grid();
 
@@ -73,16 +73,16 @@ namespace Words_Tests.Pages
             grid.Children.Add(textBoxAnswer);
             grid.Children.Add(checkBoxRemove);
 
-            listBoxQuestions.Items.Add(grid);
+            ListBoxQuestions.Items.Add(grid);
         }
 
         private void RemoveQuestions(object sender, RoutedEventArgs e)
         {
-            for (int i = listBoxQuestions.SelectedItems.Count - 1; i >= 0; i--)
-                listBoxQuestions.Items.Remove(listBoxQuestions.SelectedItems[i]);
-            for (int i = 0; i < listBoxQuestions.Items.Count; i++)
+            for (int i = ListBoxQuestions.SelectedItems.Count - 1; i >= 0; i--)
+                ListBoxQuestions.Items.Remove(ListBoxQuestions.SelectedItems[i]);
+            for (int i = 0; i < ListBoxQuestions.Items.Count; i++)
             {
-                Grid grid = (Grid)listBoxQuestions.Items[i];
+                Grid grid = (Grid)ListBoxQuestions.Items[i];
                 ((TextBlock)grid.Children[0]).Text = $"Вопрос {i + 1}:";
                 ((TextBlock)grid.Children[2]).Text = $"Ответ {i + 1}:";
             }
@@ -90,14 +90,14 @@ namespace Words_Tests.Pages
 
         private void ListBoxQuestions_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            foreach (Grid grid in listBoxQuestions.Items)
-                ((CheckBox)grid.Children[4]).IsChecked = ((ListBoxItem)listBoxQuestions.ItemContainerGenerator.ContainerFromItem(grid)).IsSelected;
+            foreach (Grid grid in ListBoxQuestions.Items)
+                ((CheckBox)grid.Children[4]).IsChecked = ((ListBoxItem)ListBoxQuestions.ItemContainerGenerator.ContainerFromItem(grid)).IsSelected;
         }
 
         private void SaveTestButton_Click(object sender, RoutedEventArgs e)
         {
             var pairs = new List<(string answer, string question)>();
-            foreach (Grid grid in listBoxQuestions.Items)
+            foreach (Grid grid in ListBoxQuestions.Items)
             {
                 TextBox textBoxQuestion = (TextBox)grid.Children[1];
                 TextBox textBoxAnswer = (TextBox)grid.Children[3];
