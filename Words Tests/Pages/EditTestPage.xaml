@@ -53,17 +53,21 @@
                   CanUserResizeRows="False"
                   CanUserAddRows="False"
                   CanUserDeleteRows="False"
-                  HeadersVisibility="Column">
+                  HeadersVisibility="Column"
+                  SelectionUnit="Cell">
             <DataGrid.Resources>
                 <Style TargetType="DataGridColumnHeader">
                     <Setter Property="HorizontalContentAlignment" Value="Center" />
                 </Style>
+                <Style x:Key="DataGridCellStyle" TargetType="DataGridCell">
+                    <Setter Property="IsTabStop" Value="False" />
+                </Style>
             </DataGrid.Resources>
             <DataGrid.Columns>
-                <DataGridTemplateColumn Width="Auto" DisplayIndex="2">
+                <DataGridTemplateColumn Width="Auto" DisplayIndex="2" CellStyle="{StaticResource DataGridCellStyle}">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Button Click="RemoveQuestion">
+                            <Button Click="RemoveQuestion" KeyboardNavigation.IsTabStop="False">
                                 <Image Source="../Icons/Remove.ico"
                                        Height="{Binding ElementName=QuestionsDataGrid, Path=FontSize}" />
                             </Button>
