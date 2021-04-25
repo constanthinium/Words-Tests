@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Threading;
 using System.Xml.Serialization;
-using Forms = System.Windows.Forms;
 
 namespace Words_Tests
 {
@@ -14,38 +13,25 @@ namespace Words_Tests
         private void Application_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
         {
             e.Handled = true;
-            if (e.Exception is NotImplementedException)
+            var textBox = new TextBox
             {
-                MessageBox.Show("Эта функция еще не реализована, но скоро будет. Наверно.", "В разработке", MessageBoxButton.OK, MessageBoxImage.Information);
-                return;
-            }
-            MessageBox.Show("Произошла ошибка. Пожалуйста, отправьте эту информацию разработчику.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
-            var form = new Forms.Form
-            {
-                Width = 640,
-                Height = 480,
-                ShowIcon = false,
-                MinimizeBox = false,
-                MaximizeBox = false,
-                FormBorderStyle = Forms.FormBorderStyle.SizableToolWindow
+                IsReadOnly = true,
+                Text = e.Exception.ToString()
             };
-            var textBox = new Forms.TextBox
+            var window = new Window
             {
-                Text = e.Exception.ToString(),
-                Dock = Forms.DockStyle.Fill,
-                ReadOnly = true,
-                Multiline = true,
-                ScrollBars = Forms.ScrollBars.Vertical,
+                Content = textBox,
+                Title = "Program error",
+                Width = 800,
+                Height = 450,
+                WindowStyle = WindowStyle.ToolWindow,
+                ResizeMode =  ResizeMode.NoResize,
+                Topmost = true
             };
-            form.Controls.Add(textBox);
-            var button = new Forms.Button
-            {
-                Text = "Скопировать в буфер обмена",
-                Dock = Forms.DockStyle.Bottom
-            };
-            button.Click += (s, ea) => Clipboard.SetText(textBox.Text);
-            form.Controls.Add(button);
-            form.ShowDialog();
+            window.Loaded += (o, args) =>
+                MessageBox.Show("Program error occurred. Please send this information to developer.",
+                    "Program error", MessageBoxButton.OK, MessageBoxImage.Error);
+            window.ShowDialog();
         }
     }
 }
