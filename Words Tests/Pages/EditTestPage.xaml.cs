@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualBasic;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
 using System.Windows;
@@ -10,6 +11,8 @@ namespace Words_Tests.Pages
 {
     public partial class EditTestPage : Page
     {
+        public bool IsTestSaved;
+
         private readonly string _testFilePath;
         private readonly ObservableCollection<QuestionAnswer> _pairs = new ObservableCollection<QuestionAnswer>();
 
@@ -24,12 +27,18 @@ namespace Words_Tests.Pages
             {
                 QuestionsDataGrid.Items.Refresh();
                 QuestionsCountTextBlock.Text = "Questions Count: " + _pairs.Count;
+                IsTestSaved = false;
+                if (args.Action != NotifyCollectionChangedAction.Add) return;
+                var addedQuestion = (QuestionAnswer)args.NewItems[0];
+                addedQuestion.PropertyChanged += (o, eventArgs) => IsTestSaved = false;
             };
 
             for (var i = 0; i < initialQuestionsCount; i++)
             {
                 _pairs.Add(new QuestionAnswer());
             }
+
+            IsTestSaved = true;
         }
 
         public EditTestPage(string testFilePath, IEnumerable<QuestionAnswer> questions) : this(0)
@@ -40,6 +49,8 @@ namespace Words_Tests.Pages
             {
                 _pairs.Add(questionAnswer);
             }
+
+            IsTestSaved = true;
         }
 
         private void AddQuestion(object sender, RoutedEventArgs e)
@@ -52,7 +63,7 @@ namespace Words_Tests.Pages
             if (_pairs.Any(q => string.IsNullOrWhiteSpace(q.Question) || string.IsNullOrWhiteSpace(q.Answer)))
             {
                 MessageBox.Show("You cannot save empty questions and answers",
-                    "Error", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                    "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
             else if (_testFilePath != null)
             {

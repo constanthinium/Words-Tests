@@ -7,9 +7,10 @@
         Title="Words Test" Height="450" Width="800"
         x:Name="MainWindowInstance"
         MinWidth="{Binding ElementName=MainWindowInstance, Path=Width, Mode=OneTime}"
-        MinHeight="{Binding ElementName=MainWindowInstance, Path=Height, Mode=OneTime}">
+        MinHeight="{Binding ElementName=MainWindowInstance, Path=Height, Mode=OneTime}"
+        Closing="MainWindow_OnClosing">
 
     <Frame x:Name="MainFrame"
-           Source="Pages\MainPage.xaml"
-           NavigationUIVisibility="Hidden" />
+           Source="Pages/MainPage.xaml"
+           NavigationUIVisibility="Hidden"/>
 </Window>
