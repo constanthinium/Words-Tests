@@ -1,5 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -8,120 +9,151 @@ namespace Words_Tests.Pages
 {
     public partial class PassTestPage : Page
     {
-        private int score;
-        private int currentPairId;
-        private readonly List<(string question, string answer)> pairs;
-        private readonly int questionCount;
-        private readonly Random rnd = new Random();
+        private int _score;
+        private int _currentQuestionIndex;
+        private readonly ObservableCollection<QuestionAnswer> _pairs;
+        private readonly int _questionCount;
+        private readonly Random _random = new Random();
 
-        private const string stringScatterLetters = "Рассыпать буквы (-2 балла)";
-        private const string stringMixLetters = "Перемешать буквы";
-
-        public PassTestPage(List<(string question, string answer)> pairs)
+        public PassTestPage(ObservableCollection<QuestionAnswer> pairs)
         {
             InitializeComponent();
-            SizeChanged += (s, e) => MixLetters();
-            this.pairs = pairs;
-            questionCount = pairs.Count;
-            currentPairId = rnd.Next(pairs.Count);
-            textBlockQuestion.Text = pairs[currentPairId].question;
+            _pairs = pairs;
+            _questionCount = pairs.Count;
+            _currentQuestionIndex = _random.Next(pairs.Count);
+            QuestionTextBlock.Text = pairs[_currentQuestionIndex].Question;
         }
 
         private void Submit(object sender, RoutedEventArgs e)
         {
-            if (textBoxAnswer.Text.Length == 0)
-                return;
-            if (textBoxAnswer.Text == pairs[currentPairId].answer)
+            if (AnswerTextBox.Text == "") return;
+
+            if (AnswerTextBox.Text == _pairs[_currentQuestionIndex].Answer)
             {
-                score++;
-                score +=
-                    Convert.ToInt32(ButtonShowFirstLetter.IsEnabled) +
-                    Convert.ToInt32(ButtonShowLength.IsEnabled) +
-                    Convert.ToInt32(((TextBlock)((StackPanel)ButtonScatterLetters.Content).Children[1]).Text == stringScatterLetters) * 2;
+                _score += 5;
+                ApplyPenalty(ref _score);
                 MessageBox.Show("Верно", "Верно", MessageBoxButton.OK, MessageBoxImage.Information);
-                ButtonShowFirstLetter.IsEnabled = ButtonShowLength.IsEnabled = true;
-                ((TextBlock)((StackPanel)ButtonScatterLetters.Content).Children[1]).Text = stringScatterLetters;
             }
             else
             {
-                MessageBox.Show($"Неверно. Верный ответ: {pairs[currentPairId].answer}", "Неверно", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-            pairs.RemoveAt(currentPairId);
-            if (pairs.Count == 0)
-            {
-                MainWindow.MainFrameInstance.GoBack();
-                MessageBox.Show($"Тест пройден. Очки: {score} из {questionCount * 5}", "Тест пройден", MessageBoxButton.OK, MessageBoxImage.Information);
-                return;
+                MessageBox.Show($"Неверно. Верный ответ: {_pairs[_currentQuestionIndex].Answer}",
+                    "Неверно", MessageBoxButton.OK, MessageBoxImage.Error);
             }
 
-            currentPairId = rnd.Next(pairs.Count);
-            textBlockQuestion.Text = pairs[currentPairId].question;
-            textBoxAnswer.Clear();
+            _pairs.RemoveAt(_currentQuestionIndex);
+
+            if (_pairs.Count == 0)
+            {
+                MessageBox.Show($"Тест пройден. Очки: {_score} из {_questionCount * 5}",
+                    "Тест пройден", MessageBoxButton.OK, MessageBoxImage.Information);
+                MainWindow.MainFrameInstance.GoBack();
+            }
+            else
+            {
+                _currentQuestionIndex = _random.Next(_pairs.Count);
+                QuestionTextBlock.Text = _pairs[_currentQuestionIndex].Question;
+                AnswerTextBox.Clear();
+                RestoreHints();
+            }
         }
 
         private void TextBoxAnswer_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
+            {
                 Submit(null, null);
+            }
         }
 
         private void ShowFirstLetter(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show($"Первая буква: {pairs[currentPairId].answer[0]}", "Подсказка", MessageBoxButton.OK, MessageBoxImage.Information);
             ((Button)sender).IsEnabled = false;
+            MessageBox.Show("Первая буква: " + _pairs[_currentQuestionIndex].Answer[0],
+                "Подсказка", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
         private void ShowLength(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show($"Длина слова: {pairs[currentPairId].answer.Length}", "Подсказка", MessageBoxButton.OK, MessageBoxImage.Information);
             ((Button)sender).IsEnabled = false;
+            MessageBox.Show("Длина слова: " + _pairs[_currentQuestionIndex].Answer.Length,
+                "Подсказка", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
         private void ScatterLetters(object sender, RoutedEventArgs e)
         {
-            if (((TextBlock)((StackPanel)ButtonScatterLetters.Content).Children[1]).Text == stringScatterLetters)
+            AnswerTextBox.IsReadOnly = true;
+            DoneButton.Visibility = Visibility.Collapsed;
+            ScatterLettersButton.Visibility = Visibility.Collapsed;
+
+            foreach (var buttonLetter in _pairs[_currentQuestionIndex].Answer.Select(letter => new Button
             {
-                textBoxAnswer.IsEnabled = DoneButton.IsEnabled = false;
-                foreach (char letter in pairs[currentPairId].answer)
-                {
-                    Button buttonLetter = new Button
-                    {
-                        Content = letter,
-                        Padding = new Thickness(10),
-                    };
-                    buttonLetter.Loaded += (s, ea) => SetRandomCanvasPos(buttonLetter);
-                    buttonLetter.Click += delegate
-                    {
-                        if (pairs[currentPairId].answer[textBoxAnswer.Text.Length] == (char)buttonLetter.Content)
-                        {
-                            textBoxAnswer.AppendText(buttonLetter.Content.ToString());
-                            canvasScatter.Children.Remove(buttonLetter);
-                            if (textBoxAnswer.Text == pairs[currentPairId].answer)
-                            {
-                                Submit(null, null);
-                                textBoxAnswer.IsEnabled = DoneButton.IsEnabled = true;
-                            }
-                        }
-                        else MessageBox.Show("Неверно");
-                    };
-                    canvasScatter.Children.Add(buttonLetter);
-                }
-                ((TextBlock)((StackPanel)ButtonScatterLetters.Content).Children[1]).Text = stringMixLetters;
+                Content = letter,
+                Padding = new Thickness(10)
+            }))
+            {
+                buttonLetter.Loaded += (o, args) => SetRandomCanvasPos(buttonLetter);
+                buttonLetter.Click += LetterClick;
+                ScatterCanvas.Children.Add(buttonLetter);
             }
-            else if (((TextBlock)((StackPanel)ButtonScatterLetters.Content).Children[1]).Text == stringMixLetters)
-                MixLetters();
         }
 
-        private void MixLetters()
+        private void LetterClick(object sender, RoutedEventArgs e)
         {
-            foreach (Button buttonLetter in canvasScatter.Children)
+            var letterButton = (Button)sender;
+
+            if (_pairs[_currentQuestionIndex].Answer[AnswerTextBox.Text.Length] == (char)letterButton.Content)
+            {
+                AnswerTextBox.AppendText(letterButton.Content.ToString());
+                ScatterCanvas.Children.Remove(letterButton);
+                if (AnswerTextBox.Text != _pairs[_currentQuestionIndex].Answer) return;
+                Submit(null, null);
+                AnswerTextBox.IsEnabled = DoneButton.IsEnabled = true;
+            }
+            else
+            {
+                MessageBox.Show("Неверно");
+            }
+        }
+
+        private void SetRandomCanvasPos(FrameworkElement buttonLetter)
+        {
+            Canvas.SetLeft(buttonLetter, _random.Next(0, (int)(ScatterCanvas.ActualWidth - buttonLetter.ActualWidth)));
+            Canvas.SetTop(buttonLetter, _random.Next(0, (int)(ScatterCanvas.ActualHeight - buttonLetter.ActualHeight)));
+        }
+
+        private void MixLetters(object sender, RoutedEventArgs e)
+        {
+            foreach (Button buttonLetter in ScatterCanvas.Children)
+            {
                 SetRandomCanvasPos(buttonLetter);
+            }
         }
 
-        private void SetRandomCanvasPos(Button buttonLetter)
+        private void ApplyPenalty(ref int score)
         {
-            Canvas.SetLeft(buttonLetter, rnd.Next(0, (int)(canvasScatter.ActualWidth - buttonLetter.ActualWidth)));
-            Canvas.SetTop(buttonLetter, rnd.Next(0, (int)(canvasScatter.ActualHeight - buttonLetter.ActualHeight)));
+            if (!ShowFirstLetterButton.IsEnabled)
+            {
+                score--;
+            }
+
+            if (!ShowLengthButton.IsEnabled)
+            {
+                score--;
+            }
+
+            if (!ScatterLettersButton.IsVisible)
+            {
+                score -= 2;
+            }
+        }
+
+        private void RestoreHints()
+        {
+            ShowFirstLetterButton.IsEnabled = true;
+            ShowLengthButton.IsEnabled = true;
+            ScatterLettersButton.Visibility = Visibility.Visible;
+            DoneButton.Visibility = Visibility.Visible;
+            AnswerTextBox.IsReadOnly = false;
         }
     }
 }

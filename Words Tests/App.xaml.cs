@@ -1,17 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
+using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Threading;
 using System.Xml.Serialization;
 using Forms = System.Windows.Forms;
-using Resx = Words_Tests.Properties.Resources;
 
 namespace Words_Tests
 {
     public partial class App : Application
     {
-        public static readonly XmlSerializer serializer = new XmlSerializer(typeof(List<(string question, string answer)>));
+        public static readonly XmlSerializer Serializer = new XmlSerializer(typeof(ObservableCollection<QuestionAnswer>));
 
         private void Application_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
         {

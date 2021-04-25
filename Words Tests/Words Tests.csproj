@@ -67,7 +67,7 @@
     <Compile Include="Pages\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pair.cs" />
+    <Compile Include="QuestionAnswer.cs" />
     <Compile Include="SelectTestDialog.cs" />
     <Page Include="ImageButton.xaml">
       <SubType>Designer</SubType>
@@ -159,6 +159,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Icons\Scatter.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\Refresh.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

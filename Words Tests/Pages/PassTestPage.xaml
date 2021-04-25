@@ -6,7 +6,8 @@
       xmlns:local="clr-namespace:Words_Tests"
       mc:Ignorable="d"
       d:DesignHeight="450" d:DesignWidth="800"
-      Title="Пройти Тест">
+      Title="Пройти Тест"
+      SizeChanged="MixLetters">
 
     <Grid>
         <Grid.RowDefinitions>
@@ -18,13 +19,13 @@
         </Grid.RowDefinitions>
 
         <TextBlock Grid.Row="0"
-                   Name="textBlockQuestion"
+                   Name="QuestionTextBlock"
                    HorizontalAlignment="Center"
                    FontSize="32" />
         <Canvas Grid.Row="1"
-                Name="canvasScatter" />
+                Name="ScatterCanvas" />
         <TextBox Grid.Row="2"
-                 Name="textBoxAnswer"
+                 Name="AnswerTextBox"
                  FontSize="32"
                  KeyDown="TextBoxAnswer_KeyDown"
                  HorizontalContentAlignment="Center" />
@@ -47,20 +48,25 @@
                             Value="16" />
                 </Style>
             </Grid.Resources>
-            <local:ImageButton x:Name="ButtonShowFirstLetter"
+            <local:ImageButton x:Name="ShowFirstLetterButton"
                                Click="ShowFirstLetter"
                                Image="../Icons/CapitalLetter.ico"
                                Text="Показать Первую Букву (-1 Балл)" />
-            <local:ImageButton x:Name="ButtonShowLength"
+            <local:ImageButton x:Name="ShowLengthButton"
                                Grid.Column="1"
                                Click="ShowLength"
                                Image="../Icons/Length.ico"
                                Text="Показать Длину Слова (-1 Балл)" />
-            <local:ImageButton x:Name="ButtonScatterLetters"
-                    Grid.Column="2"
-                    Click="ScatterLetters"
-                    Image="../Icons/Scatter.ico"
-                    Text="Рассыпать Буквы (-2 Балла)" />
+            <local:ImageButton x:Name="MixLettersButton"
+                               Grid.Column="2"
+                               Click="MixLetters"
+                               Image="../Icons/Refresh.ico"
+                               Text="Mix Letters" />
+            <local:ImageButton x:Name="ScatterLettersButton"
+                               Grid.Column="2"
+                               Click="ScatterLetters"
+                               Image="../Icons/Scatter.ico"
+                               Text="Рассыпать Буквы (-2 Балла)" />
         </Grid>
     </Grid>
 </Page>

@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
@@ -10,7 +10,7 @@ namespace Words_Tests
 {
     internal class SelectTestDialog
     {
-        public List<(string question, string answer)> Questions;
+        public ObservableCollection<QuestionAnswer> Questions;
         public string TestFilePath;
 
         public bool Show(Window parent)
@@ -65,7 +65,7 @@ namespace Words_Tests
 
                 using (var testFile = File.OpenRead(TestFilePath))
                 {
-                    Questions = (List<(string question, string answer)>)App.serializer.Deserialize(testFile);
+                    Questions = (ObservableCollection<QuestionAnswer>)App.Serializer.Deserialize(testFile);
                 }
 
                 return true;
