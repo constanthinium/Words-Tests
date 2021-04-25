@@ -1,148 +1,86 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.VisualBasic;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
-using Microsoft.VisualBasic;
 
 namespace Words_Tests.Pages
 {
     public partial class EditTestPage : Page
     {
         private readonly string _testFilePath;
+        private readonly ObservableCollection<Pair> _pairs = new ObservableCollection<Pair>();
 
-        public EditTestPage()
+        public EditTestPage(int questionsCount)
         {
             InitializeComponent();
-            for (int i = 0; i < 5; i++)
+            QuestionsDataGrid.ItemsSource = _pairs;
+            QuestionsDataGrid.AutoGeneratingColumn += (sender, args) => 
+                args.Column.Width = new DataGridLength(1, DataGridLengthUnitType.Star);
+
+            _pairs.CollectionChanged += (sender, args) =>
             {
-                AddQuestion(null, null);
+                QuestionsDataGrid.Items.Refresh();
+                QuestionsCountTextBlock.Text = "Questions Count: " + _pairs.Count;
+            };
+
+            for (var i = 0; i < questionsCount; i++)
+            {
+                _pairs.Add(new Pair());
             }
         }
 
-        public EditTestPage(string testFilePath, IEnumerable<(string question, string answer)> questions)
+        public EditTestPage(string testFilePath, IEnumerable<(string question, string answer)> questions) : this(0)
         {
-            InitializeComponent();
             _testFilePath = testFilePath;
 
             foreach (var (question, answer) in questions)
             {
-                AddQuestion(null, null);
-                var lastGrid = (Grid)ListBoxQuestions.Items[ListBoxQuestions.Items.Count - 1];
-                var questionTextBox = (TextBox)lastGrid.Children[1];
-                questionTextBox.Text = question;
-                var answerTextBox = (TextBox)lastGrid.Children[3];
-                answerTextBox.Text = answer;
+                _pairs.Add(new Pair(question, answer));
             }
         }
 
         private void AddQuestion(object sender, RoutedEventArgs e)
         {
-            TextBlock textBlockQuestion = new TextBlock { Text = $"Вопрос {ListBoxQuestions.Items.Count + 1}:", };
-            Grid.SetColumn(textBlockQuestion, 0);
-            Grid.SetRow(textBlockQuestion, ListBoxQuestions.Items.Count);
-
-            TextBox textBoxQuestion = new TextBox();
-            Grid.SetColumn(textBoxQuestion, 1);
-            Grid.SetRow(textBoxQuestion, ListBoxQuestions.Items.Count);
-
-            TextBlock textBlockAnswer = new TextBlock { Text = $"Ответ {ListBoxQuestions.Items.Count + 1}:", };
-            Grid.SetColumn(textBlockAnswer, 2);
-            Grid.SetRow(textBlockAnswer, ListBoxQuestions.Items.Count);
-
-            TextBox textBoxAnswer = new TextBox();
-            Grid.SetColumn(textBoxAnswer, 3);
-            Grid.SetRow(textBoxAnswer, ListBoxQuestions.Items.Count);
-
-            CheckBox checkBoxRemove = new CheckBox { IsTabStop = false };
-            checkBoxRemove.Click += (s, ea) =>
-                ((ListBoxItem)ListBoxQuestions.ItemContainerGenerator.ContainerFromItem((Grid)checkBoxRemove.Parent)).IsSelected = checkBoxRemove.IsChecked.Value;
-            Grid.SetColumn(checkBoxRemove, 4);
-            Grid.SetRow(checkBoxRemove, ListBoxQuestions.Items.Count);
-
-            Grid grid = new Grid();
-
-            grid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
-            grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
-            grid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
-            grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
-            grid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
-
-            grid.Children.Add(textBlockQuestion);
-            grid.Children.Add(textBoxQuestion);
-            grid.Children.Add(textBlockAnswer);
-            grid.Children.Add(textBoxAnswer);
-            grid.Children.Add(checkBoxRemove);
-
-            ListBoxQuestions.Items.Add(grid);
+            _pairs.Add(new Pair());
         }
 
-        private void RemoveQuestions(object sender, RoutedEventArgs e)
+        private void SaveTest_Click(object sender, RoutedEventArgs e)
         {
-            for (int i = ListBoxQuestions.SelectedItems.Count - 1; i >= 0; i--)
-                ListBoxQuestions.Items.Remove(ListBoxQuestions.SelectedItems[i]);
-            for (int i = 0; i < ListBoxQuestions.Items.Count; i++)
-            {
-                Grid grid = (Grid)ListBoxQuestions.Items[i];
-                ((TextBlock)grid.Children[0]).Text = $"Вопрос {i + 1}:";
-                ((TextBlock)grid.Children[2]).Text = $"Ответ {i + 1}:";
-            }
-        }
-
-        private void ListBoxQuestions_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            foreach (Grid grid in ListBoxQuestions.Items)
-                ((CheckBox)grid.Children[4]).IsChecked = ((ListBoxItem)ListBoxQuestions.ItemContainerGenerator.ContainerFromItem(grid)).IsSelected;
-        }
-
-        private void SaveTestButton_Click(object sender, RoutedEventArgs e)
-        {
-            var pairs = new List<(string answer, string question)>();
-            foreach (Grid grid in ListBoxQuestions.Items)
-            {
-                TextBox textBoxQuestion = (TextBox)grid.Children[1];
-                TextBox textBoxAnswer = (TextBox)grid.Children[3];
-                if (textBoxQuestion.Text == "" || textBoxAnswer.Text == "")
-                    continue;
-                pairs.Add((textBoxQuestion.Text, textBoxAnswer.Text));
-            }
-            if (pairs.Count == 0)
-            {
-                MessageBox.Show("Нет ни одной действительной пары вопрос-ответ", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
             if (_testFilePath != null)
             {
-                SaveTestAndClose(_testFilePath, pairs);
+                SaveTest(_testFilePath, _pairs);
                 MessageBox.Show("Этот тест изменен", "Тест изменен", MessageBoxButton.OK, MessageBoxImage.Information);
-                return;
             }
-            string name = Interaction.InputBox("Введите имя теста");
-            if (name == "") return;
-            var newTestFilePath = Path.Combine(App.testsDir, name) + ".xml";
-            if (File.Exists(newTestFilePath))
+            else
             {
-                MessageBox.Show("Тест с таким названием уже существует, попробуйте другое имя",
-                    "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
+                var testName = Interaction.InputBox("Введите имя теста");
+                if (testName == "") return;
+                var newTestFilePath = Path.Combine(App.testsDir, testName) + ".xml";
+
+                if (File.Exists(newTestFilePath))
+                {
+                    MessageBox.Show("Тест с таким названием уже существует, попробуйте другое имя",
+                        "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+                else
+                {
+                    SaveTest(newTestFilePath, _pairs);
+                    MessageBox.Show("Тест сохранен", "Готово", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
             }
-            SaveTestAndClose(newTestFilePath, pairs);
-            MessageBox.Show("Тест сохранен", "Готово", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
-        private void SaveTestAndClose(string saveFilePath, 
-            IReadOnlyCollection<(string question, string answer)> pairs)
+        private void SaveTest(string saveFilePath, IReadOnlyCollection<Pair> pairs)
         {
-            if (!Directory.Exists(App.testsDir))
-            {
-                Directory.CreateDirectory(App.testsDir);
-            }
+            throw new NotImplementedException();
+        }
 
-            using (var saveTestFile = File.Create(saveFilePath))
-            {
-                App.serializer.Serialize(saveTestFile, pairs);
-            }
-
-            MainWindow.MainFrameInstance.GoBack();
+        private void RemoveQuestion(object sender, RoutedEventArgs e)
+        {
+            _pairs.RemoveAt(QuestionsDataGrid.SelectedIndex);
         }
     }
 }

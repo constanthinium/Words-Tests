@@ -24,62 +24,53 @@
             </Menu.Resources>
             <MenuItem Click="AddQuestion">
                 <MenuItem.Header>
-                    <TextBlock Text="Добавить Вопрос" VerticalAlignment="Center" />
+                    <TextBlock Text="Add Question" VerticalAlignment="Center" />
                 </MenuItem.Header>
                 <MenuItem.Icon>
                     <Image Source="../Icons/Add.ico" />
                 </MenuItem.Icon>
             </MenuItem>
-            <MenuItem x:Name="RemoveMenuItem"
-                          IsEnabled="{Binding ElementName=ListBoxQuestions, Path=HasItems}"
-                          Click="RemoveQuestions">
-                <MenuItem.Header>
-                    <TextBlock Text="Удалить Вопросы" VerticalAlignment="Center"
-                                   IsEnabled="{Binding ElementName=RemoveMenuItem, Path=IsEnabled}"/>
-                </MenuItem.Header>
-                <MenuItem.Icon>
-                    <Image Source="../Icons/Remove.ico" />
-                </MenuItem.Icon>
-            </MenuItem>
             <MenuItem x:Name="SaveMenuItem"
-                          IsEnabled="{Binding ElementName=ListBoxQuestions, Path=HasItems}"
-                          Click="SaveTestButton_Click">
+                      IsEnabled="{Binding ElementName=QuestionsDataGrid, Path=HasItems}"
+                      Click="SaveTest_Click">
                 <MenuItem.Header>
                     <TextBlock Text="Сохранить Тест" VerticalAlignment="Center"
-                                   IsEnabled="{Binding ElementName=SaveMenuItem, Path=IsEnabled}"/>
+                               IsEnabled="{Binding ElementName=SaveMenuItem, Path=IsEnabled}"/>
                 </MenuItem.Header>
                 <MenuItem.Icon>
                     <Image Source="../Icons/Save.ico" />
                 </MenuItem.Icon>
             </MenuItem>
         </Menu>
-        <ScrollViewer>
-            <ListBox Name="ListBoxQuestions"
-                         KeyboardNavigation.TabNavigation="Continue"
-                         SelectionChanged="ListBoxQuestions_SelectionChanged"
-                         HorizontalContentAlignment="Stretch"
-                         SelectionMode="Multiple">
-                <ListBox.Resources>
-                    <Style TargetType="FrameworkElement"
-                               x:Key="QuestionGridBase">
-                        <Setter Property="Margin"
-                                    Value="10" />
-                    </Style>
-                    <Style BasedOn="{StaticResource QuestionGridBase}"
-                               TargetType="TextBox">
-                        <Setter Property="FontSize"
-                                    Value="14" />
-                    </Style>
-                    <Style BasedOn="{StaticResource QuestionGridBase}"
-                               TargetType="TextBlock" />
-                    <Style BasedOn="{StaticResource QuestionGridBase}"
-                               TargetType="CheckBox" />
-                    <Style TargetType="ListBoxItem">
-                        <Setter Property="IsTabStop"
-                                    Value="False" />
-                    </Style>
-                </ListBox.Resources>
-            </ListBox>
-        </ScrollViewer>
+        <StatusBar DockPanel.Dock="Bottom">
+            <TextBlock x:Name="QuestionsCountTextBlock" Text="Questions Count: 0" />
+        </StatusBar>
+        <DataGrid x:Name="QuestionsDataGrid" 
+                  FontSize="16" 
+                  CanUserResizeColumns="False"
+                  CanUserSortColumns="False"
+                  CanUserReorderColumns="False"
+                  CanUserResizeRows="False"
+                  CanUserAddRows="False"
+                  CanUserDeleteRows="False"
+                  HeadersVisibility="Column">
+            <DataGrid.Resources>
+                <Style TargetType="DataGridColumnHeader">
+                    <Setter Property="HorizontalContentAlignment" Value="Center" />
+                </Style>
+            </DataGrid.Resources>
+            <DataGrid.Columns>
+                <DataGridTemplateColumn Width="Auto" DisplayIndex="2">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Click="RemoveQuestion">
+                                <Image Source="../Icons/Remove.ico"
+                                       Height="{Binding ElementName=QuestionsDataGrid, Path=FontSize}" />
+                            </Button>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
     </DockPanel>
 </Page>

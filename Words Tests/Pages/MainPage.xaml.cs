@@ -12,7 +12,7 @@ namespace Words_Tests.Pages
 
         private void CreateTest(object sender, RoutedEventArgs e)
         {
-            var createTestPage = new EditTestPage();
+            var createTestPage = new EditTestPage(5);
             MainWindow.MainFrameInstance.Navigate(createTestPage);
         }
 
@@ -33,6 +33,5 @@ namespace Words_Tests.Pages
             var createTestPage = new EditTestPage(dialog.TestFilePath, dialog.Questions);
             MainWindow.MainFrameInstance.Navigate(createTestPage);
         }
-
     }
 }
