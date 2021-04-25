@@ -39,9 +39,9 @@ namespace Words_Tests
             var listBox = new ListBox();
             window.Content = listBox;
             listBox.MouseDoubleClick += (sender, args) => window.DialogResult = true;
-            var testFiles = Directory.GetFiles(App.testsDir, "*.xml");
+            var testFiles = Directory.GetFiles(".", "*.xml");
 
-            if (!Directory.Exists(App.testsDir) || testFiles.Length == 0)
+            if (testFiles.Length == 0)
             {
                 MessageBox.Show("Похоже, у вас нет ни одного теста, который можно было бы пройти или отредактировать.",
                     "Нет тестов", MessageBoxButton.OK, MessageBoxImage.Information);

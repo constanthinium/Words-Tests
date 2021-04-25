@@ -11,7 +11,6 @@ namespace Words_Tests
 {
     public partial class App : Application
     {
-        public static readonly string testsDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "My Tests");
         public static readonly XmlSerializer serializer = new XmlSerializer(typeof(List<(string question, string answer)>));
 
         private void Application_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)

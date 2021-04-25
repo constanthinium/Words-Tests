@@ -17,7 +17,7 @@ namespace Words_Tests.Pages
         {
             InitializeComponent();
             QuestionsDataGrid.ItemsSource = _pairs;
-            QuestionsDataGrid.AutoGeneratingColumn += (sender, args) => 
+            QuestionsDataGrid.AutoGeneratingColumn += (sender, args) =>
                 args.Column.Width = new DataGridLength(1, DataGridLengthUnitType.Star);
 
             _pairs.CollectionChanged += (sender, args) =>
@@ -58,7 +58,7 @@ namespace Words_Tests.Pages
             {
                 var testName = Interaction.InputBox("Введите имя теста");
                 if (testName == "") return;
-                var newTestFilePath = Path.Combine(App.testsDir, testName) + ".xml";
+                var newTestFilePath = testName + ".xml";
 
                 if (File.Exists(newTestFilePath))
                 {
