@@ -35,10 +35,18 @@ namespace Words_Tests
                 }
             };
 
-            window.Closing += (sender, args) => parent.Effect = null;
             var listBox = new ListBox();
+            window.Closing += (sender, args) => parent.Effect = null;
             window.Content = listBox;
-            listBox.MouseDoubleClick += (sender, args) => window.DialogResult = true;
+
+            listBox.MouseDoubleClick += (sender, args) =>
+            {
+                if (listBox.SelectedIndex > -1)
+                {
+                    window.DialogResult = true;
+                }
+            };
+
             var testFiles = Directory.GetFiles(".", "*.xml");
 
             if (testFiles.Length == 0)
@@ -65,14 +73,15 @@ namespace Words_Tests
 
                 using (var testFile = File.OpenRead(TestFilePath))
                 {
-                    Questions = (ObservableCollection<QuestionAnswer>)App.Serializer.Deserialize(testFile);
+                    Questions = (ObservableCollection<QuestionAnswer>) App.Serializer.Deserialize(testFile);
                 }
 
                 return true;
             }
             catch (InvalidOperationException)
             {
-                MessageBox.Show("Тест, который вы пытаетесь открыть, либо не является тестом, либо поврежден.", "Ошибка",
+                MessageBox.Show("Тест, который вы пытаетесь открыть, либо не является тестом, либо поврежден.",
+                    "Ошибка",
                     MessageBoxButton.OK, MessageBoxImage.Error);
                 return false;
             }

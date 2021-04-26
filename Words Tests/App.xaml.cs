@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.Media;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
@@ -13,24 +14,27 @@ namespace Words_Tests
         private void Application_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
         {
             e.Handled = true;
+
             var textBox = new TextBox
             {
+                Text = e.Exception.ToString(),
                 IsReadOnly = true,
-                Text = e.Exception.ToString()
+                HorizontalScrollBarVisibility = ScrollBarVisibility.Auto,
+                VerticalScrollBarVisibility = ScrollBarVisibility.Auto
             };
+
             var window = new Window
             {
                 Content = textBox,
-                Title = "Program error",
+                Title = "Program error occurred. Please send this text to developer.",
                 Width = 800,
                 Height = 450,
                 WindowStyle = WindowStyle.ToolWindow,
-                ResizeMode =  ResizeMode.NoResize,
-                Topmost = true
+                ResizeMode = ResizeMode.NoResize,
+                Owner = Current.MainWindow
             };
-            window.Loaded += (o, args) =>
-                MessageBox.Show("Program error occurred. Please send this information to developer.",
-                    "Program error", MessageBoxButton.OK, MessageBoxImage.Error);
+
+            window.Loaded += (o, args) => SystemSounds.Hand.Play();
             window.ShowDialog();
         }
     }
