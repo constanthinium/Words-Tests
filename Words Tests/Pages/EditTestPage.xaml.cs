@@ -103,5 +103,20 @@ namespace Words_Tests.Pages
         {
             _pairs.RemoveAt(QuestionsDataGrid.SelectedIndex);
         }
+
+        private void AddImage(object sender, RoutedEventArgs e)
+        {
+            var imageQuery = ((QuestionAnswer)QuestionsDataGrid.SelectedItem).Question;
+
+            if (string.IsNullOrWhiteSpace(imageQuery))
+            {
+                MessageBox.Show("You need to enter question first", "Enter Question",
+                    MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            else
+            {
+                new QuestionImageWindow(imageQuery) { Owner = Application.Current.MainWindow }.ShowDialog();
+            }
+        }
     }
 }

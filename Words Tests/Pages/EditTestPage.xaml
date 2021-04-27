@@ -97,7 +97,8 @@
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <Button KeyboardNavigation.IsTabStop="False" 
-                                    Content="Add Image" />
+                                    Content="Add Image"
+                                    Click="AddImage" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
