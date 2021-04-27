@@ -156,5 +156,8 @@
   <ItemGroup>
     <Resource Include="Icons\Refresh.ico" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\Ban.ico" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

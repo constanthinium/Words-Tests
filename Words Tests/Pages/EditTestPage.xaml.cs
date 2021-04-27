@@ -22,6 +22,7 @@ namespace Words_Tests.Pages
             QuestionsDataGrid.ItemsSource = _pairs;
             QuestionsDataGrid.AutoGeneratingColumn += (sender, args) =>
                 args.Column.Width = new DataGridLength(1, DataGridLengthUnitType.Star);
+            RemoveSelectionMenuItem.Click += (sender, args) => QuestionsDataGrid.SelectedIndex = -1;
 
             _pairs.CollectionChanged += (sender, args) =>
             {

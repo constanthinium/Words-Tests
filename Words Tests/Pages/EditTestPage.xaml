@@ -41,6 +41,14 @@
                     <Image Source="../Icons/Save.ico" />
                 </MenuItem.Icon>
             </MenuItem>
+            <MenuItem x:Name="RemoveSelectionMenuItem">
+                <MenuItem.Header>
+                    <TextBlock Text="Remove Selection" VerticalAlignment="Center" />
+                </MenuItem.Header>
+                <MenuItem.Icon>
+                    <Image Source="../Icons/Ban.ico" />
+                </MenuItem.Icon>
+            </MenuItem>
         </Menu>
         <StatusBar DockPanel.Dock="Bottom">
             <TextBlock x:Name="QuestionsCountTextBlock" Text="Questions Count: 0" />
