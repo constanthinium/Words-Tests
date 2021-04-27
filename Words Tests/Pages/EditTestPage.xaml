@@ -75,18 +75,29 @@
                 <Style TargetType="DataGridColumnHeader">
                     <Setter Property="HorizontalContentAlignment" Value="Center" />
                 </Style>
-                <Style x:Key="DataGridCellStyle" TargetType="DataGridCell">
+                <Style x:Key="NoTabCellStyle" TargetType="DataGridCell">
                     <Setter Property="IsTabStop" Value="False" />
                 </Style>
             </DataGrid.Resources>
             <DataGrid.Columns>
-                <DataGridTemplateColumn Width="Auto" DisplayIndex="2" CellStyle="{StaticResource DataGridCellStyle}">
+                <DataGridTemplateColumn Width="Auto" DisplayIndex="3"
+                                        CellStyle="{StaticResource NoTabCellStyle}">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Button Click="RemoveQuestion" KeyboardNavigation.IsTabStop="False">
+                            <Button Click="RemoveQuestion" 
+                                    KeyboardNavigation.IsTabStop="False">
                                 <Image Source="../Icons/Remove.ico"
                                        Height="{Binding ElementName=QuestionsDataGrid, Path=FontSize}" />
                             </Button>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Width="Auto" DisplayIndex="2"
+                                        CellStyle="{StaticResource NoTabCellStyle}">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button KeyboardNavigation.IsTabStop="False" 
+                                    Content="Add Image" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
