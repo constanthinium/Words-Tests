@@ -35,7 +35,7 @@
             </MenuItem>
             <MenuItem x:Name="SaveMenuItem"
                       IsEnabled="{Binding ElementName=QuestionsDataGrid, Path=HasItems}"
-                      Click="SaveTest_Click">
+                      Click="SaveTestClick">
                 <MenuItem.Header>
                     <TextBlock Text="Сохранить Тест" VerticalAlignment="Center"
                                IsEnabled="{Binding ElementName=SaveMenuItem, Path=IsEnabled}"/>

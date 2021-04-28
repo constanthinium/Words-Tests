@@ -59,7 +59,7 @@ namespace Words_Tests.Pages
             _pairs.Add(new QuestionAnswer());
         }
 
-        private void SaveTest_Click(object sender, RoutedEventArgs e)
+        private void SaveTestClick(object sender, RoutedEventArgs e)
         {
             if (_pairs.Any(q => string.IsNullOrWhiteSpace(q.Question) || string.IsNullOrWhiteSpace(q.Answer)))
             {
@@ -88,13 +88,14 @@ namespace Words_Tests.Pages
             }
         }
 
-        private static void SaveTest(string saveFilePath, IReadOnlyCollection<QuestionAnswer> pairs)
+        private void SaveTest(string saveFilePath, IReadOnlyCollection<QuestionAnswer> pairs)
         {
             using (var file = File.Create(saveFilePath))
             {
                 App.Serializer.Serialize(file, pairs);
             }
 
+            IsTestSaved = true;
             MessageBox.Show("Тест сохранен", "Готово", MessageBoxButton.OK, MessageBoxImage.Information);
             MainWindow.MainFrameInstance.GoBack();
         }
