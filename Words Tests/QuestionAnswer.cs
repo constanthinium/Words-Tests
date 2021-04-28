@@ -63,5 +63,15 @@ namespace Words_Tests
             encoder.Save(stream);
             Image = stream.ToArray();
         }
+
+        public ImageSource GetImageSourceFromImageBytes()
+        {
+            var image = new BitmapImage();
+            var stream = new MemoryStream(_image);
+            image.BeginInit();
+            image.StreamSource = stream;
+            image.EndInit();
+            return image;
+        }
     }
 }

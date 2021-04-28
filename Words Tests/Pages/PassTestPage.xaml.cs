@@ -4,6 +4,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media.Imaging;
 
 namespace Words_Tests.Pages
 {
@@ -20,8 +21,7 @@ namespace Words_Tests.Pages
             InitializeComponent();
             _pairs = pairs;
             _questionCount = pairs.Count;
-            _currentQuestionIndex = _random.Next(pairs.Count);
-            QuestionTextBlock.Text = pairs[_currentQuestionIndex].Question;
+            NextQuestion();
         }
 
         private void Submit(object sender, RoutedEventArgs e)
@@ -50,10 +50,9 @@ namespace Words_Tests.Pages
             }
             else
             {
-                _currentQuestionIndex = _random.Next(_pairs.Count);
-                QuestionTextBlock.Text = _pairs[_currentQuestionIndex].Question;
                 AnswerTextBox.Clear();
                 RestoreHints();
+                NextQuestion();
             }
         }
 
@@ -154,6 +153,14 @@ namespace Words_Tests.Pages
             ScatterLettersButton.Visibility = Visibility.Visible;
             DoneButton.Visibility = Visibility.Visible;
             AnswerTextBox.IsReadOnly = false;
+        }
+
+        private void NextQuestion()
+        {
+            _currentQuestionIndex = _random.Next(_pairs.Count);
+            var questionAnswer = _pairs[_currentQuestionIndex];
+            QuestionTextBlock.Text = questionAnswer.Question;
+            QuestionImage.Source = questionAnswer.GetImageSourceFromImageBytes();
         }
     }
 }

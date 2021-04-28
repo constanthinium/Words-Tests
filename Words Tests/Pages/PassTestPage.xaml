@@ -24,6 +24,8 @@
                    FontSize="32" />
         <Canvas Grid.Row="1"
                 Name="ScatterCanvas" />
+        <Image x:Name="QuestionImage" 
+               Grid.Row="1" />
         <TextBox Grid.Row="2"
                  Name="AnswerTextBox"
                  FontSize="32"
