@@ -14,6 +14,7 @@ namespace Words_Tests
         public QuestionImageWindow(string imageQuery)
         {
             InitializeComponent();
+            QuestionTextBlock.Text = $"Select \"{imageQuery}\" Image";
             DisplayImages(imageQuery);
         }
 
