@@ -13,15 +13,17 @@ namespace Words_Tests
         public ObservableCollection<QuestionAnswer> Questions;
         public string TestFilePath;
 
-        public bool Show(Window parent)
+        public bool Show()
         {
+            var mainWindow = Application.Current.MainWindow;
+
             var window = new Window
             {
                 Title = "Выберите тест",
                 WindowStyle = WindowStyle.None,
-                Width = parent.ActualWidth / 2,
-                Height = parent.ActualHeight / 2,
-                Owner = parent,
+                Width = mainWindow.ActualWidth / 2,
+                Height = mainWindow.ActualHeight / 2,
+                Owner = mainWindow,
                 WindowStartupLocation = WindowStartupLocation.CenterOwner,
                 ResizeMode = ResizeMode.NoResize,
                 ShowInTaskbar = false
@@ -36,7 +38,7 @@ namespace Words_Tests
             };
 
             var listBox = new ListBox();
-            window.Closing += (sender, args) => parent.Effect = null;
+            window.Closing += (sender, args) => mainWindow.Effect = null;
             window.Content = listBox;
 
             listBox.MouseDoubleClick += (sender, args) =>
@@ -61,7 +63,7 @@ namespace Words_Tests
                 listBox.Items.Add(Path.GetFileNameWithoutExtension(file));
             }
 
-            parent.Effect = new BlurEffect { Radius = 16 };
+            mainWindow.Effect = new BlurEffect { Radius = 16 };
             if (window.ShowDialog() == false)
             {
                 return false;

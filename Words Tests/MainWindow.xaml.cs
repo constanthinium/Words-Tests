@@ -8,14 +8,12 @@ namespace Words_Tests
 {
     public partial class MainWindow : Window
     {
-        public static Window Instance;
         public static Frame MainFrameInstance;
 
         public MainWindow()
         {
             InitializeComponent();
 
-            Instance = this;
             MainFrameInstance = MainFrame;
             MainFrame.CommandBindings.Add(new CommandBinding(NavigationCommands.BrowseBack, (sender, args) => { }));
             MainFrame.Navigating += MainWindow_OnClosing;
