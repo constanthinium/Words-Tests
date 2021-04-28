@@ -11,11 +11,13 @@ namespace Words_Tests
 {
     public partial class QuestionImageWindow : Window
     {
+        public ImageSource SelectedImage;
+
         public QuestionImageWindow(string imageQuery)
         {
             InitializeComponent();
-            QuestionTextBlock.Text = $"Select \"{imageQuery}\" Image";
             DisplayImages(imageQuery);
+            QuestionTextBlock.Text = $"Select \"{imageQuery}\" Image";
         }
 
         private async void DisplayImages(string imageQuery)
@@ -32,9 +34,19 @@ namespace Words_Tests
                 var imageData = client.DownloadData(imageAddress);
                 var imageView = new Image { Source = BytesToImage(imageData) };
                 var imageButton = new Button { Content = imageView };
+                imageButton.Click += ImageButtonOnClick;
                 ImagesGrid.Children.Add(imageButton);
                 Grid.SetColumn(imageButton, i - 1);
             }
+        }
+
+        private void ImageButtonOnClick(object sender, RoutedEventArgs e)
+        {
+            var button = (Button)sender;
+            var imageView = (Image)button.Content;
+            var image = imageView.Source;
+            SelectedImage = image;
+            DialogResult = true;
         }
 
         private static ImageSource BytesToImage(byte[] imageData)
