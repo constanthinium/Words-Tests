@@ -70,7 +70,8 @@
                   CanUserAddRows="False"
                   CanUserDeleteRows="False"
                   HeadersVisibility="Column"
-                  KeyboardNavigation.TabNavigation="Cycle">
+                  KeyboardNavigation.TabNavigation="Cycle"
+                  AutoGenerateColumns="False">
             <DataGrid.Resources>
                 <Style TargetType="DataGridColumnHeader">
                     <Setter Property="HorizontalContentAlignment" Value="Center" />
@@ -80,8 +81,20 @@
                 </Style>
             </DataGrid.Resources>
             <DataGrid.Columns>
-                <DataGridTemplateColumn Width="Auto" DisplayIndex="3"
-                                        CellStyle="{StaticResource NoTabCellStyle}">
+                <DataGridTextColumn Header="Question" Binding="{Binding Question}" Width="*" />
+                <DataGridTextColumn Header="Answer" Binding="{Binding Answer}" Width="*" />
+                <DataGridTemplateColumn Header="Image"
+                                        CellStyle="{StaticResource NoTabCellStyle}"
+                                        Width="64">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Click="AddImage" MaxHeight="32">
+                                <Image Source="{Binding Image}" />
+                            </Button>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn CellStyle="{StaticResource NoTabCellStyle}">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <Button Click="RemoveQuestion" 
@@ -89,16 +102,6 @@
                                 <Image Source="../Icons/Remove.ico"
                                        Height="{Binding ElementName=QuestionsDataGrid, Path=FontSize}" />
                             </Button>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-                <DataGridTemplateColumn Width="Auto" DisplayIndex="2"
-                                        CellStyle="{StaticResource NoTabCellStyle}">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <Button KeyboardNavigation.IsTabStop="False" 
-                                    Content="Add Image"
-                                    Click="AddImage" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>

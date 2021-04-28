@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media.Imaging;
 
 namespace Words_Tests.Pages
 {
@@ -115,7 +116,13 @@ namespace Words_Tests.Pages
             }
             else
             {
-                new QuestionImageWindow(imageQuery) { Owner = Application.Current.MainWindow }.ShowDialog();
+                var imageWindow = new QuestionImageWindow(imageQuery)
+                { Owner = Application.Current.MainWindow };
+
+                if (imageWindow.ShowDialog() == true)
+                {
+                    _pairs[QuestionsDataGrid.SelectedIndex].SetImageBytesFromBitmapSource(imageWindow.SelectedImage);
+                }
             }
         }
     }
