@@ -30,10 +30,9 @@ namespace Words_Tests
                 var imageAddress = matches[i].Groups[1].Value;
                 var imageData = client.DownloadData(imageAddress);
                 var imageView = new Image { Source = BytesToImage(imageData) };
-                var imageWithBorder = new Border { Child = imageView };
-                ImagesGrid.ColumnDefinitions.Add(new ColumnDefinition());
-                ImagesGrid.Children.Add(imageWithBorder);
-                Grid.SetColumn(imageWithBorder, i - 1);
+                var imageButton = new Button { Content = imageView };
+                ImagesGrid.Children.Add(imageButton);
+                Grid.SetColumn(imageButton, i - 1);
             }
         }
 

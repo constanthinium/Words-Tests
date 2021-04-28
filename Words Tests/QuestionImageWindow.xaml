@@ -7,20 +7,22 @@
         mc:Ignorable="d"
         Title="Question Image" Height="450" Width="800">
     <DockPanel>
-        <TextBlock Text="Select Image" DockPanel.Dock="Top" FontSize="32" HorizontalAlignment="Center" />
-        <Grid x:Name="ImagesGrid">
-            <Grid.Resources>
-                <Style TargetType="Border">
-                    <Setter Property="VerticalAlignment" Value="Center" />
+        <TextBlock Text="Select Image"
+                   DockPanel.Dock="Top"
+                   FontSize="32" 
+                   HorizontalAlignment="Center" />
+        <WrapPanel x:Name="ImagesGrid"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center">
+            <WrapPanel.Resources>
+                <Style TargetType="Button">
                     <Setter Property="Padding" Value="8" />
-                    <Style.Triggers>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="Background" Value="{StaticResource 
-                                {x:Static SystemColors.HighlightBrushKey}}" />
-                        </Trigger>
-                    </Style.Triggers>
+                    <Setter Property="Margin" Value="8" />
                 </Style>
-            </Grid.Resources>
-        </Grid>
+                <Style TargetType="Image">
+                    <Setter Property="Stretch" Value="None" />
+                </Style>
+            </WrapPanel.Resources>
+        </WrapPanel>
     </DockPanel>
 </Window>
