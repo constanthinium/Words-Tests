@@ -64,8 +64,9 @@ namespace Words_Tests
             Image = stream.ToArray();
         }
 
-        public ImageSource GetImageSourceFromImageBytes()
+        public ImageSource GetImageSourceOrReturnNull()
         {
+            if (_image == null) return null;
             var image = new BitmapImage();
             var stream = new MemoryStream(_image);
             image.BeginInit();

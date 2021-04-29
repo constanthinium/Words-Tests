@@ -160,7 +160,7 @@ namespace Words_Tests.Pages
             _currentQuestionIndex = _random.Next(_pairs.Count);
             var questionAnswer = _pairs[_currentQuestionIndex];
             QuestionTextBlock.Text = questionAnswer.Question;
-            QuestionImage.Source = questionAnswer.GetImageSourceFromImageBytes();
+            QuestionImage.Source = questionAnswer.GetImageSourceOrReturnNull();
         }
     }
 }
