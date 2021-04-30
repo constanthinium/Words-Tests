@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Net;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
@@ -24,14 +23,13 @@ namespace Words_Tests.Windows
         {
             var uri = new Uri($"https://www.google.com/search?q={imageQuery}&tbm=isch");
             var pattern = new Regex("<img.+?src=[\"'](.+?)[\"'].*?>");
-            var client = new WebClient();
-            var response = await client.DownloadStringTaskAsync(uri);
+            var response = await App.Client.DownloadStringTaskAsync(uri);
             var matches = pattern.Matches(response);
 
             for (var i = 1; i <= 3; i++)
             {
                 var imageAddress = matches[i].Groups[1].Value;
-                var imageData = client.DownloadData(imageAddress);
+                var imageData = App.Client.DownloadData(imageAddress);
                 var imageView = new Image { Source = BytesToImage(imageData) };
                 var imageButton = new Button { Content = imageView };
                 imageButton.Click += ImageButtonOnClick;

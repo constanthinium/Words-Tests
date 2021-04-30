@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using System.Media;
 using System.Net;
@@ -18,8 +19,14 @@ namespace Words_Tests
     public partial class App
     {
         public static readonly XmlSerializer Serializer = new XmlSerializer(typeof(ObservableCollection<QuestionAnswer>));
+        public static readonly WebClient Client = new WebClient();
+        private static readonly string ProgramName = AppDomain.CurrentDomain.FriendlyName;
 
-        public App() => Startup += (sender, args) => CheckForUpdates();
+        public App()
+        {
+            Startup += (sender, args) => CheckForUpdates();
+            Client.Headers.Add(HttpRequestHeader.UserAgent, ProgramName);
+        }
 
         private void Application_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
         {
@@ -51,24 +58,44 @@ namespace Words_Tests
         private static void CheckForUpdates()
         {
             const string releasesUrl = "https://api.github.com/repos/constanthinium/Words-Tests/releases";
-            var client = new WebClient();
-            var programName = AppDomain.CurrentDomain.FriendlyName;
-            client.Headers.Add(HttpRequestHeader.UserAgent, programName);
-            var releasesJson = client.DownloadString(releasesUrl);
+            var releasesJson = Client.DownloadString(releasesUrl);
             var serializer = new DataContractJsonSerializer(typeof(Release[]));
             var jsonStream = new MemoryStream(Encoding.ASCII.GetBytes(releasesJson));
             var releases = (Release[])serializer.ReadObject(jsonStream);
             var latestRelease = releases[0];
-            var latestVersion = latestRelease.TagName.Remove(0, 1);
+            var latestVersion = latestRelease.TagName.TrimStart('v');
             var currentVersion = Assembly.GetExecutingAssembly().GetName().Version.ToString(3);
-            if (currentVersion == latestVersion) return;
-            var result = MessageBox.Show("You are not using the latest version. Do you want to download it?",
-                "Check for updates", MessageBoxButton.OKCancel, MessageBoxImage.Warning);
-            if (result != MessageBoxResult.OK) return;
-            var downloadUrl = latestRelease.Assets[0].DownloadUrl;
-            client.DownloadFile(downloadUrl, $"{GetDownloadsFolder()}\\{programName}");
-            MessageBox.Show("Latest version downloaded in your download folder. Press OK to close the program.",
-                "Downloaded", MessageBoxButton.OK, MessageBoxImage.Information);
+            if (currentVersion == latestVersion) Debug.WriteLine("latest version");
+            else
+            {
+                Debug.WriteLine("outdated version");
+                Update(latestRelease.Assets[0].DownloadUrl);
+            }
+        }
+
+        private static void Update(string downloadUrl)
+        {
+            var downloadedFilePath = $"{GetDownloadsFolder()}\\{ProgramName}";
+            Client.DownloadFile(downloadUrl, downloadedFilePath);
+            var appLocation = Assembly.GetExecutingAssembly().Location;
+
+            var replaceBatch =
+                "@echo off\n" +
+                ":loop\n" +
+                "tasklist | find \"Words Tests.exe\" > nul\n" +
+                "if errorlevel 1 goto continue else\n" +
+                "timeout /nobreak 1 > nul\n" +
+                "goto loop\n" +
+                ":continue\n" +
+                $"move /y \"{downloadedFilePath}\", \"{appLocation}\"\n" +
+                $"\"{appLocation}\"";
+
+            var tempName = Path.GetTempFileName();
+            tempName = Path.ChangeExtension(tempName, "bat");
+            File.WriteAllText(tempName, replaceBatch);
+            var startInfo = new ProcessStartInfo(tempName)
+            { WindowStyle = ProcessWindowStyle.Hidden };
+            Process.Start(startInfo);
             Current.Shutdown();
         }
 
