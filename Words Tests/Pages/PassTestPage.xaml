@@ -22,10 +22,10 @@
                    Name="QuestionTextBlock"
                    HorizontalAlignment="Center"
                    FontSize="32" />
-        <Canvas Grid.Row="1"
-                Name="ScatterCanvas" />
         <Image x:Name="QuestionImage" 
                Grid.Row="1" />
+        <Canvas Grid.Row="1"
+                Name="ScatterCanvas" />
         <TextBox Grid.Row="2"
                  Name="AnswerTextBox"
                  FontSize="32"
