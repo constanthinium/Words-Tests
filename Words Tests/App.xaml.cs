@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.IO;
 using System.Media;
 using System.Net;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
 using System.Text;
@@ -52,7 +52,8 @@ namespace Words_Tests
         {
             const string releasesUrl = "https://api.github.com/repos/constanthinium/Words-Tests/releases";
             var client = new WebClient();
-            client.Headers.Add(HttpRequestHeader.UserAgent, AppDomain.CurrentDomain.FriendlyName);
+            var programName = AppDomain.CurrentDomain.FriendlyName;
+            client.Headers.Add(HttpRequestHeader.UserAgent, programName);
             var releasesJson = client.DownloadString(releasesUrl);
             var serializer = new DataContractJsonSerializer(typeof(Release[]));
             var jsonStream = new MemoryStream(Encoding.ASCII.GetBytes(releasesJson));
@@ -65,7 +66,21 @@ namespace Words_Tests
                 "Check for updates", MessageBoxButton.OKCancel, MessageBoxImage.Warning);
             if (result != MessageBoxResult.OK) return;
             var downloadUrl = latestRelease.Assets[0].DownloadUrl;
-            Process.Start(downloadUrl);
+            client.DownloadFile(downloadUrl, $"{GetDownloadsFolder()}\\{programName}");
+            MessageBox.Show("Latest version downloaded in your download folder. Press OK to close the program.",
+                "Downloaded", MessageBoxButton.OK, MessageBoxImage.Information);
+            Current.Shutdown();
+        }
+
+        [DllImport("shell32", CharSet = CharSet.Unicode)]
+        private static extern int SHGetKnownFolderPath([MarshalAs(UnmanagedType.LPStruct)]
+            Guid rfid, uint dwFlags, IntPtr hToken, out string ppszPath);
+
+        private static string GetDownloadsFolder()
+        {
+            SHGetKnownFolderPath(new Guid("{374DE290-123F-4565-9164-39C4925E467B}"),
+                0, IntPtr.Zero, out var outPath);
+            return outPath;
         }
 
         [DataContract]
