@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using System.Media;
 using System.Net;
@@ -57,21 +58,31 @@ namespace Words_Tests
             var jsonStream = new MemoryStream(Encoding.ASCII.GetBytes(releasesJson));
             var releases = (Release[])serializer.ReadObject(jsonStream);
             var latestRelease = releases[0];
-            var latestReleaseVersion = latestRelease.TagName.Remove(0, 1);
+            var latestVersion = latestRelease.TagName.Remove(0, 1);
             var currentVersion = Assembly.GetExecutingAssembly().GetName().Version.ToString(3);
-
-            if (currentVersion != latestReleaseVersion)
-            {
-                MessageBox.Show("You are not using the latest version", "Check for updates",
-                    MessageBoxButton.OK, MessageBoxImage.Warning);
-            }
+            if (currentVersion == latestVersion) return;
+            var result = MessageBox.Show("You are not using the latest version. Do you want to download it?",
+                "Check for updates", MessageBoxButton.OKCancel, MessageBoxImage.Warning);
+            if (result != MessageBoxResult.OK) return;
+            var downloadUrl = latestRelease.Assets[0].DownloadUrl;
+            Process.Start(downloadUrl);
         }
 
         [DataContract]
         private struct Release
         {
             [DataMember(Name = "tag_name")]
-            public string TagName { get; set; }
+            public string TagName;
+
+            [DataMember(Name = "assets")]
+            public Asset[] Assets;
+
+            [DataContract]
+            public struct Asset
+            {
+                [DataMember(Name = "browser_download_url")]
+                public string DownloadUrl;
+            }
         }
     }
 }
