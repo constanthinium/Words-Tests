@@ -4,11 +4,11 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Media.Imaging;
+using Words_Tests.Windows;
 
 namespace Words_Tests.Pages
 {
-    public partial class PassTestPage : Page
+    public partial class PassTestPage
     {
         private int _score;
         private int _currentQuestionIndex;

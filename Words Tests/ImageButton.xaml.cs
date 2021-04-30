@@ -23,11 +23,10 @@ namespace Words_Tests
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
+            if (value == null) throw new ArgumentNullException(nameof(value));
             var dValue = (double)value;
-            if (targetType == typeof(Thickness))
-                return dValue / 2;
-            if (targetType == typeof(double))
-                return dValue * 1.5f;
+            if (targetType == typeof(Thickness)) return dValue / 2;
+            if (targetType == typeof(double)) return dValue * 1.5f;
             throw new ArgumentException("What are you doing");
         }
 

@@ -1,9 +1,9 @@
 ﻿using System.Windows;
-using System.Windows.Controls;
+using Words_Tests.Windows;
 
 namespace Words_Tests.Pages
 {
-    public partial class MainPage : Page
+    public partial class MainPage
     {
         public MainPage()
         {

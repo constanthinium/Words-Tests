@@ -4,9 +4,9 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using Words_Tests.Pages;
 
-namespace Words_Tests
+namespace Words_Tests.Windows
 {
-    public partial class MainWindow : Window
+    public partial class MainWindow
     {
         public static Frame MainFrameInstance;
 

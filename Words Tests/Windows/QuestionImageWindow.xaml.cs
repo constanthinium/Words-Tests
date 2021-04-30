@@ -7,9 +7,9 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
-namespace Words_Tests
+namespace Words_Tests.Windows
 {
-    public partial class QuestionImageWindow : Window
+    public partial class QuestionImageWindow
     {
         public ImageSource SelectedImage;
 

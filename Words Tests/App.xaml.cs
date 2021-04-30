@@ -7,7 +7,7 @@ using System.Xml.Serialization;
 
 namespace Words_Tests
 {
-    public partial class App : Application
+    public partial class App
     {
         public static readonly XmlSerializer Serializer = new XmlSerializer(typeof(ObservableCollection<QuestionAnswer>));
 

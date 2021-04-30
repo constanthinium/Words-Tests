@@ -71,7 +71,8 @@
                   CanUserDeleteRows="False"
                   HeadersVisibility="Column"
                   KeyboardNavigation.TabNavigation="Cycle"
-                  AutoGenerateColumns="False">
+                  AutoGenerateColumns="False" 
+                  d:DataContext="{d:DesignData QuestionAnswer}">
             <DataGrid.Resources>
                 <Style TargetType="DataGridColumnHeader">
                     <Setter Property="HorizontalContentAlignment" Value="Center" />
@@ -87,9 +88,9 @@
                                         CellStyle="{StaticResource NoTabCellStyle}"
                                         Width="64">
                     <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
+                        <DataTemplate DataType="local:QuestionAnswer">
                             <Button Click="AddImage" MaxHeight="32">
-                                <Image Source="{Binding Image}" />
+                                <Image Source="{Binding Path=Image}" />
                             </Button>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>

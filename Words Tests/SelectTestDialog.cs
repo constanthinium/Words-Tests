@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media.Effects;
+using Words_Tests.Windows;
 
 namespace Words_Tests
 {
@@ -16,6 +17,7 @@ namespace Words_Tests
         public bool Show()
         {
             var mainWindow = Application.Current.MainWindow;
+            if (mainWindow == null) throw new ArgumentNullException(nameof(MainWindow));
 
             var window = new Window
             {

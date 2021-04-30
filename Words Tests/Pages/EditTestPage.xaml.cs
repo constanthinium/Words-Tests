@@ -5,12 +5,11 @@ using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Media.Imaging;
+using Words_Tests.Windows;
 
 namespace Words_Tests.Pages
 {
-    public partial class EditTestPage : Page
+    public partial class EditTestPage
     {
         public bool IsTestSaved;
 
@@ -21,8 +20,6 @@ namespace Words_Tests.Pages
         {
             InitializeComponent();
             QuestionsDataGrid.ItemsSource = _pairs;
-            QuestionsDataGrid.AutoGeneratingColumn += (sender, args) =>
-                args.Column.Width = new DataGridLength(1, DataGridLengthUnitType.Star);
             RemoveSelectionMenuItem.Click += (sender, args) => QuestionsDataGrid.UnselectAllCells();
 
             _pairs.CollectionChanged += (sender, args) =>
