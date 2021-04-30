@@ -62,6 +62,9 @@
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="QuestionAnswer.cs" />
+    <Compile Include="QuestionImageWindow.xaml.cs">
+      <DependentUpon>QuestionImageWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="SelectTestDialog.cs" />
     <Page Include="ImageButton.xaml">
       <SubType>Designer</SubType>
@@ -93,6 +96,10 @@
     <Page Include="Pages\PassTestPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="QuestionImageWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>

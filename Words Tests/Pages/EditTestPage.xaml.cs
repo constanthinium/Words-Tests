@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media.Imaging;
 
 namespace Words_Tests.Pages
 {
@@ -103,6 +104,27 @@ namespace Words_Tests.Pages
         private void RemoveQuestion(object sender, RoutedEventArgs e)
         {
             _pairs.RemoveAt(QuestionsDataGrid.SelectedIndex);
+        }
+
+        private void AddImage(object sender, RoutedEventArgs e)
+        {
+            var imageQuery = ((QuestionAnswer)QuestionsDataGrid.SelectedItem).Question;
+
+            if (string.IsNullOrWhiteSpace(imageQuery))
+            {
+                MessageBox.Show("You need to enter question first", "Enter Question",
+                    MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            else
+            {
+                var imageWindow = new QuestionImageWindow(imageQuery)
+                { Owner = Application.Current.MainWindow };
+
+                if (imageWindow.ShowDialog() == true)
+                {
+                    _pairs[QuestionsDataGrid.SelectedIndex].SetImageBytesFromBitmapSource(imageWindow.SelectedImage);
+                }
+            }
         }
     }
 }

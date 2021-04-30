@@ -70,20 +70,35 @@
                   CanUserAddRows="False"
                   CanUserDeleteRows="False"
                   HeadersVisibility="Column"
-                  KeyboardNavigation.TabNavigation="Cycle">
+                  KeyboardNavigation.TabNavigation="Cycle"
+                  AutoGenerateColumns="False">
             <DataGrid.Resources>
                 <Style TargetType="DataGridColumnHeader">
                     <Setter Property="HorizontalContentAlignment" Value="Center" />
                 </Style>
-                <Style x:Key="DataGridCellStyle" TargetType="DataGridCell">
+                <Style x:Key="NoTabCellStyle" TargetType="DataGridCell">
                     <Setter Property="IsTabStop" Value="False" />
                 </Style>
             </DataGrid.Resources>
             <DataGrid.Columns>
-                <DataGridTemplateColumn Width="Auto" DisplayIndex="2" CellStyle="{StaticResource DataGridCellStyle}">
+                <DataGridTextColumn Header="Question" Binding="{Binding Question}" Width="*" />
+                <DataGridTextColumn Header="Answer" Binding="{Binding Answer}" Width="*" />
+                <DataGridTemplateColumn Header="Image"
+                                        CellStyle="{StaticResource NoTabCellStyle}"
+                                        Width="64">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Button Click="RemoveQuestion" KeyboardNavigation.IsTabStop="False">
+                            <Button Click="AddImage" MaxHeight="32">
+                                <Image Source="{Binding Image}" />
+                            </Button>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn CellStyle="{StaticResource NoTabCellStyle}">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Click="RemoveQuestion" 
+                                    KeyboardNavigation.IsTabStop="False">
                                 <Image Source="../Icons/Remove.ico"
                                        Height="{Binding ElementName=QuestionsDataGrid, Path=FontSize}" />
                             </Button>

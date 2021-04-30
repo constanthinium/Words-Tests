@@ -1,5 +1,9 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Diagnostics;
+using System.IO;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using System.Xml.Serialization;
 
 namespace Words_Tests
@@ -8,17 +12,7 @@ namespace Words_Tests
     {
         private string _question;
         private string _answer;
-
-        public QuestionAnswer()
-        {
-            
-        }
-
-        public QuestionAnswer(string question, string answer)
-        {
-            _question = question;
-            _answer = answer;
-        }
+        private byte[] _image;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -44,10 +38,41 @@ namespace Words_Tests
             }
         }
 
+        public byte[] Image
+        {
+            get => _image;
+            set
+            {
+                _image = value;
+                OnPropertyChanged("Image");
+            }
+        }
+
         protected virtual void OnPropertyChanged(string propertyName)
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
             Debug.WriteLine("PropertyChanged: " + propertyName);
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        public void SetImageBytesFromBitmapSource(ImageSource imageSource)
+        {
+            var bitmapSource = (BitmapSource)imageSource;
+            var encoder = new JpegBitmapEncoder();
+            encoder.Frames.Add(BitmapFrame.Create(bitmapSource));
+            var stream = new MemoryStream();
+            encoder.Save(stream);
+            Image = stream.ToArray();
+        }
+
+        public ImageSource GetImageSourceOrReturnNull()
+        {
+            if (_image == null) return null;
+            var image = new BitmapImage();
+            var stream = new MemoryStream(_image);
+            image.BeginInit();
+            image.StreamSource = stream;
+            image.EndInit();
+            return image;
         }
     }
 }
