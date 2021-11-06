@@ -10,6 +10,7 @@ namespace Words_Tests.Windows
 {
     public partial class QuestionImageWindow
     {
+        private const int ImagesCount = 4;
         public ImageSource SelectedImage;
 
         public QuestionImageWindow(string imageQuery)
@@ -26,7 +27,7 @@ namespace Words_Tests.Windows
             var response = await App.Client.DownloadStringTaskAsync(uri);
             var matches = pattern.Matches(response);
 
-            for (var i = 1; i <= 3; i++)
+            for (var i = 1; i <= ImagesCount; i++)
             {
                 var imageAddress = matches[i].Groups[1].Value;
                 var imageData = App.Client.DownloadData(imageAddress);
