@@ -8,6 +8,7 @@ namespace Words_Tests.Pages
         public MainPage()
         {
             InitializeComponent();
+            VersionTextBlock.Text = $"Version: {App.CurrentVersion}";
         }
 
         private void CreateTest(object sender, RoutedEventArgs e)

@@ -20,6 +20,7 @@ namespace Words_Tests
     {
         public static readonly XmlSerializer Serializer = new XmlSerializer(typeof(ObservableCollection<QuestionAnswer>));
         public static readonly WebClient Client = new WebClient();
+        public static readonly string CurrentVersion = Assembly.GetExecutingAssembly().GetName().Version.ToString(3);
         private static readonly string ProgramName = AppDomain.CurrentDomain.FriendlyName;
 
         public App()
@@ -64,8 +65,7 @@ namespace Words_Tests
             var releases = (Release[])serializer.ReadObject(jsonStream);
             var latestRelease = releases[0];
             var latestVersion = latestRelease.TagName.TrimStart('v');
-            var currentVersion = Assembly.GetExecutingAssembly().GetName().Version.ToString(3);
-            if (currentVersion == latestVersion) Debug.WriteLine("latest version");
+            if (CurrentVersion == latestVersion) Debug.WriteLine("latest version");
             else
             {
                 Debug.WriteLine("outdated version");

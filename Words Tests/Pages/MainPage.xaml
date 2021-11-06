@@ -13,6 +13,7 @@
             <RowDefinition />
             <RowDefinition />
             <RowDefinition />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <Grid.Resources>
             <Style TargetType="local:ImageButton">
@@ -33,5 +34,10 @@
                            Text="Редактировать Тест"
                            Image="../Icons/Edit.ico" 
                            Click="EditTest" />
+
+        <StatusBar Grid.Row="3">
+            <TextBlock x:Name="VersionTextBlock"
+                       Text="Version" />
+        </StatusBar>
     </Grid>
 </Page>
