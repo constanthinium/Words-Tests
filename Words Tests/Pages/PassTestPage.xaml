@@ -35,7 +35,7 @@
                            Grid.Row="3"
                            FontSize="32"
                            Click="Submit"
-                           Text="Готово"
+                           Text="Done"
                            Image="../Icons/Done.ico" />
 
         <Grid Grid.Row="4">
@@ -53,12 +53,12 @@
             <local:ImageButton x:Name="ShowFirstLetterButton"
                                Click="ShowFirstLetter"
                                Image="../Icons/CapitalLetter.ico"
-                               Text="Показать Первую Букву (-1 Балл)" />
+                               Text="See the first letter (-1 point)" />
             <local:ImageButton x:Name="ShowLengthButton"
                                Grid.Column="1"
                                Click="ShowLength"
                                Image="../Icons/Length.ico"
-                               Text="Показать Длину Слова (-1 Балл)" />
+                               Text="How long is the word (-1 point)" />
             <local:ImageButton x:Name="MixLettersButton"
                                Grid.Column="2"
                                Click="MixLetters"
@@ -68,7 +68,7 @@
                                Grid.Column="2"
                                Click="ScatterLetters"
                                Image="../Icons/Scatter.ico"
-                               Text="Рассыпать Буквы (-2 Балла)" />
+                               Text="Spill letters" />
         </Grid>
     </Grid>
 </Page>

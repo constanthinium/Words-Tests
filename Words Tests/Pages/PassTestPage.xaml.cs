@@ -67,14 +67,14 @@ namespace Words_Tests.Pages
         private void ShowFirstLetter(object sender, RoutedEventArgs e)
         {
             ((Button)sender).IsEnabled = false;
-            MessageBox.Show("Первая буква: " + _pairs[_currentQuestionIndex].Answer[0],
+            MessageBox.Show("The first letter - " + _pairs[_currentQuestionIndex].Answer[0],
                 "Подсказка", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
         private void ShowLength(object sender, RoutedEventArgs e)
         {
             ((Button)sender).IsEnabled = false;
-            MessageBox.Show("Длина слова: " + _pairs[_currentQuestionIndex].Answer.Length,
+            MessageBox.Show("The word length - " + _pairs[_currentQuestionIndex].Answer.Length,
                 "Подсказка", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
