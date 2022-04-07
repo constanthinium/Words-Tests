@@ -57,6 +57,14 @@
                     <Image Source="../Icons/Ban.ico" />
                 </MenuItem.Icon>
             </MenuItem>
+            <MenuItem x:Name="RestoreLastDeletedQuestion" Click="RestoreLastDeletedQuestion_Click" IsEnabled="False">
+                <MenuItem.Header>
+                    <TextBlock Text="Restore Last Deleted Question" VerticalAlignment="Center" />
+                </MenuItem.Header>
+                <MenuItem.Icon>
+                    <Image Source="../Icons/Refresh.ico" />
+                </MenuItem.Icon>
+            </MenuItem>
         </Menu>
         <StatusBar DockPanel.Dock="Bottom">
             <TextBlock x:Name="QuestionsCountTextBlock" Text="Questions Count: 0" />

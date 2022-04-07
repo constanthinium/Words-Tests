@@ -12,7 +12,7 @@ namespace Words_Tests.Pages
     public partial class EditTestPage
     {
         public bool IsTestSaved;
-
+        private QuestionAnswer deletedQuesion;
         private readonly string _testFilePath;
         private readonly ObservableCollection<QuestionAnswer> _pairs = new ObservableCollection<QuestionAnswer>();
 
@@ -100,12 +100,15 @@ namespace Words_Tests.Pages
 
         private void RemoveQuestion(object sender, RoutedEventArgs e)
         {
-            _pairs.RemoveAt(QuestionsDataGrid.SelectedIndex);
+            int index = QuestionsDataGrid.SelectedIndex;
+            deletedQuesion = _pairs[index];
+            _pairs.RemoveAt(index);
+            RestoreLastDeletedQuestion.IsEnabled = true;
         }
 
         private void AddImage(object sender, RoutedEventArgs e)
         {
-            var imageQuery = ((QuestionAnswer)QuestionsDataGrid.SelectedItem).Question;
+            var imageQuery = ((QuestionAnswer)QuestionsDataGrid.SelectedItem).Answer;
 
             if (string.IsNullOrWhiteSpace(imageQuery))
             {
@@ -122,6 +125,12 @@ namespace Words_Tests.Pages
                     _pairs[QuestionsDataGrid.SelectedIndex].SetImageBytesFromBitmapSource(imageWindow.SelectedImage);
                 }
             }
+        }
+
+        private void RestoreLastDeletedQuestion_Click(object sender, RoutedEventArgs e)
+        {
+            _pairs.Add(deletedQuesion);
+            RestoreLastDeletedQuestion.IsEnabled = false;
         }
     }
 }
