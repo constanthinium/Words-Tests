@@ -32,12 +32,12 @@ namespace Words_Tests.Pages
             {
                 _score += 5;
                 ApplyPenalty(ref _score);
-                MessageBox.Show("Верно", "Верно", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show("Correct", "Correct", MessageBoxButton.OK, MessageBoxImage.Information);
             }
             else
             {
-                MessageBox.Show($"Неверно. Верный ответ: {_pairs[_currentQuestionIndex].Answer}",
-                    "Неверно", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show($"Incorrect. Correct answer: {_pairs[_currentQuestionIndex].Answer}",
+                    "Incorrect", MessageBoxButton.OK, MessageBoxImage.Error);
             }
 
             _pairs.RemoveAt(_currentQuestionIndex);
@@ -110,7 +110,7 @@ namespace Words_Tests.Pages
             }
             else
             {
-                MessageBox.Show("Неверно");
+                MessageBox.Show("Incorrect");
             }
         }
 
